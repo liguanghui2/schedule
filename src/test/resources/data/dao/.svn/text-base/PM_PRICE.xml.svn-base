@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-    <PM_PRICE id="1" pm_info_id="1234" product_id="1"/>
-    <PM_PRICE id="2" pm_info_id="1234" product_id="1"/>
-    <PM_PRICE id="3" pm_info_id="1234" product_id="2"/>
-    <PM_PRICE id="4" pm_info_id="1234" product_id="2"/>
-    <PM_PRICE id="5" pm_info_id="1234" product_id="2"/>
-</dataset>
