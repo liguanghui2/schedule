@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/!svn/ver/1832906/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/sharding/processor
+END
+GpsProductSyncShardingDataProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 177
+/svn/!svn/ver/1624030/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/sharding/processor/GpsProductSyncShardingDataProcessor.java
+END
+CompareLPPromotionShardingDataProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/svn/!svn/ver/1664760/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/sharding/processor/CompareLPPromotionShardingDataProcessor.java
+END
+PromotionDataesCleanShardingDataProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 183
+/svn/!svn/ver/1619925/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/sharding/processor/PromotionDataesCleanShardingDataProcessor.java
+END
+JDBookSyncShardingDataProcessorForCrash.java
+K 25
+svn:wc:ra_dav:version-url
+V 181
+/svn/!svn/ver/1767649/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/sharding/processor/JDBookSyncShardingDataProcessorForCrash.java
+END
+PriceChangeTaskCleanShardingDataProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 183
+/svn/!svn/ver/1619925/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/sharding/processor/PriceChangeTaskCleanShardingDataProcessor.java
+END
+PmPriceDataCleanProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 167
+/svn/!svn/ver/1832906/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/sharding/processor/PmPriceDataCleanProcessor.java
+END

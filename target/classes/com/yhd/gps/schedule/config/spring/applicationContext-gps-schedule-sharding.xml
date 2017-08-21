@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="no" default-lazy-init="false">
+
+	<!-- 操作切片占用的DAO -->
+	<bean id="shardingIndexDao" class="com.yhd.gps.schedule.dao.impl.ShardingIndexDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource"/>
+	</bean>
+
+	<bean class="com.yhd.schedule.sharding.ShardingIndexManager">
+		<property name="shardingIndexDao" ref="shardingIndexDao"/>
+	</bean>
+
+	<!-- 切片容错处理类 -->
+	<bean class="com.yhd.schedule.sharding.ShardingFaultHandler">
+		<property name="shardingActiveIpListZKPath" value="/com/yihaodian/gps/job/data_sharding/pool_ips"/>
+	</bean>
+
+	<!-- 历史价格统计计算 -->
+	<bean id="historyPriceMsgShardingDataExecCommandCreator" class="com.yhd.gps.schedule.sharding.HistoryPriceMsgShardingDataExecCommandCreator">
+		<property name="historyPriceChangeMsgDao" ref="historyPriceChangeMsgDao"/>
+		<property name="dateSectionPriceInfoHandler" ref="dateSectionPriceInfoHandler"/>
+		<property name="bussinessType" value="${historyPriceStatistics.bussinessType}"/>
+	</bean>
+
+	<bean id="historyPriceMsgShardingDataProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<!-- 最多抢多少个切片配置 -->
+		<property name="canGrabMaxShrdingCount" value="${historyPriceStatistics.canGrabMaxShrdingCount}"/>
+		<!-- 抢夺下个切片的等待时间（毫秒） -->
+		<property name="grapShardingSleepTime" value="${historyPriceStatistics.grapShardingSleepTime}"/>
+		<!-- 等待所有切片处理完的时间 -->
+		<property name="processShardingMaxTime" value="${historyPriceStatistics.processShardingMaxTime}"/>
+		<property name="commandCreator" ref="historyPriceMsgShardingDataExecCommandCreator"/>
+	</bean>
+
+	<!-- 促销价导致的变价消息发送 -->
+	<bean id="gpsPriceChangeMsgSendCommandCreator" class="com.yhd.gps.schedule.sharding.GPSPriceChangeMsgSendCommandCreator">
+		<property name="busyPriceChangeMsgDao" ref="busyPriceChangeMsgDao"/>
+		<property name="sender" ref="gpsPriceChangeMsgSender"/>
+		<property name="bussinessType" value="${priceChangeMsgSend.bussinessType}"/>
+		<property name="pageSize" value="${priceChangeMsgSend.pageSize}"/>
+	</bean>
+
+	<bean id="gpsPriceChangeMsgSendProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${priceChangeMsgSend.canGrabMaxShrdingCount}"/>
+		<property name="grapShardingSleepTime" value="${priceChangeMsgSend.grapShardingSleepTime}"/>
+		<property name="processShardingMaxTime" value="${priceChangeMsgSend.processShardingMaxTime}"/>
+		<property name="commandCreator" ref="gpsPriceChangeMsgSendCommandCreator"/>
+	</bean>
+
+	<!-- LP价格变化消息发送 -->
+	<bean id="promotionPriceChangeMsgSendCommandCreator" class="com.yhd.gps.schedule.sharding.PromotionPriceChangeMsgSendCommandCreator">
+		<property name="promotionPriceChangeMsgDao" ref="promotionPriceChangeMsgDao"/>
+		<property name="sender" ref="promotionPriceChangeMsgSender"/>
+		<property name="bussinessType" value="${promotionPriceChangeMsgSend.bussinessType}"/>
+		<property name="pageSize" value="${promotionPriceChangeMsgSend.pageSize}"/>
+	</bean>
+
+	<bean id="promotionPriceChangeMsgSendProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${promotionPriceChangeMsgSend.canGrabMaxShrdingCount}"/>
+		<property name="grapShardingSleepTime" value="${promotionPriceChangeMsgSend.grapShardingSleepTime}"/>
+		<property name="processShardingMaxTime" value="${promotionPriceChangeMsgSend.processShardingMaxTime}"/>
+		<property name="commandCreator" ref="promotionPriceChangeMsgSendCommandCreator"/>
+	</bean>
+
+	<bean id="gpsProductSyncShardingDataProcessor" class="com.yhd.gps.schedule.sharding.processor.GpsProductSyncShardingDataProcessor">
+		<property name="busyGpsProductSyncService" ref="busyGpsProductSyncService"/>
+		<property name="busyMiscConfigDao" ref="busyMiscConfigDao"/>
+		
+		<property name="processShardingMaxTime" value="${gpsProductSync.processShardingMaxTime}"/>
+		<property name="bussinessType" value="${gpsProductSync.bussinessType}"/>
+		<property name="handleSyncDataLogMaxCount" value="100"/>
+		<property name="syncProductToGpsMaxCount" value="100"/>
+		<property name="pageSize" value="20"/>
+		<property name="syncPeriod" value="${gpsProductSync.syncPeriod}"/>
+		<property name="concurrentSize" value="${gpsProductSync.concurrentSize}"/>
+		<property name="processMaxTime" value="5"/>
+	</bean>
+
+	<bean id="priceChangeTaskCleanShardingDataProcessor" class="com.yhd.gps.schedule.sharding.processor.PriceChangeTaskCleanShardingDataProcessor">
+		<property name="busyPriceChangeMsgDao" ref="busyPriceChangeMsgDao"/>
+		<property name="promotionPriceChangeMsgDao" ref="promotionPriceChangeMsgDao"/>
+		<property name="bussinessType" value="${priceChangeTaskClean.bussinessType}"/>
+	</bean>
+	
+	<bean id="promotionDataesCleanShardingDataProcessor" class="com.yhd.gps.schedule.sharding.processor.PromotionDataesCleanShardingDataProcessor">
+		<property name="busyPromRuleCleanService" ref="busyPromRuleCleanService"/>
+		<property name="bussinessType" value="${promotionDataesClean.bussinessType}"/>
+	</bean>
+	
+	<!-- 价格促销重置已售数量 -->
+	<bean id="resetPromRuleSoldNumShardingDataProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${promRuleSoldNumReset.canGrabMaxShrdingCount}"/>
+		<property name="grapShardingSleepTime" value="${promRuleSoldNumReset.grapShardingSleepTime}"/>
+		<property name="processShardingMaxTime" value="${promRuleSoldNumReset.processShardingMaxTime}"/>
+		<property name="commandCreator" ref="resetPromRuleSoldNumCommandCreator"/>
+	</bean>
+	
+	<bean id="resetPromRuleSoldNumCommandCreator" class="com.yhd.gps.schedule.sharding.ResetPromRuleSoldNumCommandCreator">
+		<property name="dataProcessScannerDao" ref="dataProcessScannerDao"/>
+		<property name="promRuleSoldNumResetService" ref="promRuleSoldNumResetService"/>
+		<property name="bussinessType" value="${promRuleSoldNumReset.bussinessType}"/>
+		<property name="pageSize" value="${promRuleSoldNumReset.pageSize}"/>
+	</bean>
+	
+	<!-- 补偿价格变动表已处理、历史价格表无数据的记录 -->
+	<bean id="compensateGpsPriceChangeMsgSendCommandCreator" class="com.yhd.gps.schedule.sharding.CompensateGPSPriceChangeMsgSendCommandCreator">
+		<property name="busyPriceChangeMsgDao" ref="busyPriceChangeMsgDao"/>
+		<property name="sender" ref="compensateGpsPriceChangeMsgSender"/>
+		<property name="bussinessType" value="compenstate_history_price_change_msg"/>
+		<property name="pageSize" value="${priceChangeMsgSend.pageSize}"/>
+	</bean>
+
+	<bean id="compensateGpsPriceChangeMsgSendProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${priceChangeMsgSend.canGrabMaxShrdingCount}"/>
+		<property name="grapShardingSleepTime" value="${priceChangeMsgSend.grapShardingSleepTime}"/>
+		<property name="processShardingMaxTime" value="${priceChangeMsgSend.processShardingMaxTime}"/>
+		<property name="commandCreator" ref="compensateGpsPriceChangeMsgSendCommandCreator"/>
+	</bean>
+
+	<!-- lp促销比对程序 -->
+	<bean id="compareLPPromotionShardingDataProcessor" class="com.yhd.gps.schedule.sharding.processor.CompareLPPromotionShardingDataProcessor">
+		<property name="busyProductPromotionService" ref="busyProductPromotionService"/>
+		<property name="bussinessType" value="${compareLPPromotion.bussinessType}"/>
+	</bean>
+	
+	<!-- 京东图书入驻1号店拉取pss库商品id数据 -->
+	<bean id="jdBookSyncShardingDataProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${jdBookSync.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${jdBookSync.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${jdBookSync.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="jdBookSyncCommandCreator"/>
+	</bean>
+	<bean id="jdBookSyncCommandCreator" class="com.yhd.gps.schedule.sharding.JDBookSyncCommandCreator">
+		<property name="jdBookSyncService" ref="jdBookSyncService"/>
+		<property name="bussinessType" value="${jdBookSync.bussinessType}"/>
+		<property name="msgSize" value="${jdBookSync.msgSize}"/> 
+	</bean>
+	
+	<!-- 京东图书定时器宕机后切片处理器 -->
+	<bean id="jdBookSyncShardingDataProcessorForCrash" class="com.yhd.gps.schedule.sharding.processor.JDBookSyncShardingDataProcessorForCrash">
+		<property name="bussinessType" value="${jdBookSync.bussinessType}"/>
+		<property name="msgSize" value="${jdBookSync.msgSize}"/>
+		<property name="canGrabMaxShrdingCount" value="${jdBookSync.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${jdBookSync.processShardingMaxTime}"/>
+		<property name="jdBookSyncService" ref="jdBookSyncService"/>
+	</bean>
+	
+	<!-- 初始化离线数据定时器 -->
+	<bean id="initOffLineDataShardingDataProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${offlineData.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${offlineData.processShardingMaxTime}"/>
+		<property name="commandCreator" ref="initOfflineDataMsgSendCommandCreator"/>
+	</bean>
+	
+	<bean id="initOfflineDataMsgSendCommandCreator" class="com.yhd.gps.schedule.sharding.InitOfflineDataMsgSendCommandCreator">
+		<property name="offlineDataService" ref="offlineDataService"/>
+		<property name="bussinessType" value="${offlineData.bussinessType}"/>
+		<property name="msgSize" value="${offlineData.msgSize}"/> 
+	</bean>
+
+	<!-- 京东日百入驻1号店拉取pss库商品id数据 -->
+	<bean id="jdDailyGoodsSyncShardingDataProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${jdDailyGoodsSync.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${jdDailyGoodsSync.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${jdDailyGoodsSync.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="jdDailyGoodsSyncCommandCreator"/>
+	</bean>
+	
+	<bean id="jdDailyGoodsSyncCommandCreator" class="com.yhd.gps.schedule.sharding.JDDailyGoodsSyncCommandCreator">
+		<property name="jdBookSyncService" ref="jdBookSyncService"/>
+		<property name="bussinessType" value="${jdDailyGoodsSync.bussinessType}"/>
+		<property name="msgSize" value="${jdDailyGoodsSync.msgSize}"/> 
+	</bean>
+	
+	<!-- 规则执行 -->
+	<bean id="ruleExecuteShardingDataProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${ruleExecute.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${ruleExecute.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${ruleExecute.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="ruleExecuteCommandCreator"/>
+	</bean>
+	
+	<bean id="ruleExecuteCommandCreator" class="com.yhd.gps.schedule.sharding.ruleExecuteCommandCreator">
+		<property name="bussinessType" value="${ruleExecute.bussinessType}"/>
+		<property name="gpsScheduleWarningRuleDao" ref="gpsScheduleWarningRuleDao"/>
+	</bean>
+	
+	<!-- ===================================== 以下城市精选专用 ===================================== -->
+	
+	<!-- 处理众数价Job -->
+	<bean id="computeModePriceProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${computeModePrice.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${computeModePrice.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${computeModePrice.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="computeModePriceCommandCreator"/>
+	</bean>
+	
+	<bean id="computeModePriceCommandCreator" class="com.yhd.gps.schedule.sharding.ComputeModePriceCommandCreator">
+		<property name="bussinessType" value="${computeModePrice.bussinessType}"/>
+	</bean>
+	
+	<!-- 处理建议价 -->
+	<bean id="handleAdvicedPriceProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${handleAdvicedPrice.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${handleAdvicedPrice.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${handleAdvicedPrice.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="handleAdvicedPriceCommandCreator"/>
+	</bean>
+	<bean id="handleAdvicedPriceCommandCreator" class="com.yhd.gps.schedule.sharding.HandleAdvicedPriceCommandCreator">
+		<property name="bussinessType" value="${handleAdvicedPrice.bussinessType}"/>
+		<property name="pageSize" value="${handleAdvicedPrice.pageSize}"/>
+		<property name="advicePriceService" ref="advicePriceService"/>
+	</bean>
+	
+	<!-- 城市精选创建普通促销Job -->
+	<bean id="cityPickPromotionProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${cityPickPromotion.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${cityPickPromotion.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${cityPickPromotion.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="cityPickPromotionCommandCreator"/>
+	</bean>
+	
+	<bean id="cityPickPromotionCommandCreator" class="com.yhd.gps.schedule.sharding.CityPickPromotionCommandCreator">
+		<property name="bussinessType" value="${cityPickPromotion.bussinessType}"/>
+		<property name="busyMiscConfigDao" ref="busyMiscConfigDao"/>
+		<property name="cityPickPriceService" ref="cityPickPriceService"/>
+	</bean>
+
+		<!-- 发送价格档期消息给AI系统Job -->
+	<bean id="priceScheduleMsgSend4AIProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${priceScheduleMsgSend4AI.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${priceScheduleMsgSend4AI.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${priceScheduleMsgSend4AI.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="priceScheduleMsgSend4AICommandCreator"/>
+	</bean>
+	<bean id="priceScheduleMsgSend4AICommandCreator" class="com.yhd.gps.schedule.sharding.PriceScheduleMsgSend4AICommandCreator">
+		<property name="bussinessType" value="${priceScheduleMsgSend4AI.bussinessType}"/>
+	</bean>
+
+	<!-- 发送定价当期完整性告警邮件Job -->
+	<bean id="sendPriceScheduleCompletenessProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${sendPriceScheduleCompleteness.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${sendPriceScheduleCompleteness.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${sendPriceScheduleCompleteness.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="sendPriceScheduleCompletenessCommandCreator"/>
+	</bean>
+	<bean id="sendPriceScheduleCompletenessCommandCreator" class="com.yhd.gps.schedule.sharding.SendPriceScheduleCompletenessCommandCreator">
+		<property name="bussinessType" value="${sendPriceScheduleCompleteness.bussinessType}"/>
+	</bean>
+	
+	<!--敏感品弹性价格更新-->
+	<bean id="sensitivePriceUpdateProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+		<property name="canGrabMaxShrdingCount" value="${sensitivePriceUpdate.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${sensitivePriceUpdate.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${sensitivePriceUpdate.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="sensitivePriceUpdateCommandCreator"/>
+	</bean>
+	<bean id="sensitivePriceUpdateCommandCreator" class="com.yhd.gps.schedule.sharding.SensitivePriceUpdateCommandCreator">
+		<property name="bussinessType" value="${sensitivePriceUpdate.bussinessType}"/>
+		<property name="pageSize" value="${sensitivePriceUpdate.pageSize}"/>
+		<property name="advicePriceService" ref="advicePriceService"/>
+	</bean>
+	<!-- ===================================== 以上城市精选专用 ===================================== -->
+	
+	<!-- 金币促销价变化发消息Job -->
+	<bean id="goldCoinPriceChangeMsgSendProcessor" class="com.yhd.schedule.sharding.core.ShardingDataProcessor">
+	    <property name="canGrabMaxShrdingCount" value="${goldCoinPriceChangeMsgSend.canGrabMaxShrdingCount}"/>
+		<property name="processShardingMaxTime" value="${goldCoinPriceChangeMsgSend.processShardingMaxTime}"/>
+		<property name="grapShardingSleepTime" value="${goldCoinPriceChangeMsgSend.grapShardingSleepTime}"/>
+		<property name="commandCreator" ref="goldCoinPriceChangeMsgSendCommandCreator"/>
+	</bean>
+	<bean id="goldCoinPriceChangeMsgSendCommandCreator" class="com.yhd.gps.schedule.sharding.GoldCoinPriceChangeMsgSendCommandCreator">
+		<property name="bussinessType" value="${goldCoinPriceChangeMsgSend.bussinessType}"/>
+		<property name="pageSize" value="${goldCoinPriceChangeMsgSend.pageSize}"/>
+		<property name="sender" ref="goldCoinPriceChangeMsgSender"/>
+		<property name="goldCoinPriceChangeMsgDao" ref="goldCoinPriceChangeMsgDao"/>
+	</bean>
+
+	<!-- 任务管理器基类 -->
+	<bean id="baseTaskManager" class="com.yhd.gps.schedule.parall.BaseTaskManager" abstract="true" >
+		<property name="executor" ref="commandExecutor"></property>
+		<property name="maxWaitTime" value="120"></property>
+	</bean>
+	<bean id="compensateHistoryPriceDataParallTaskManager" class="com.yhd.gps.schedule.parall.manager.CompensateHistoryPriceDataParallTaskManager" parent="baseTaskManager"> 
+		<property name="busyPmInfoDao" ref="busyPmInfoDao"/>
+		<property name="historyPriceChangeMsgDao" ref="historyPriceChangeMsgDao"/>
+	</bean>
+
+</beans>

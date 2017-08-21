@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GPSPmPrice">
+
+	<typeAlias alias="pmPriceVo" type="com.yhd.gps.schedule.vo.PmPriceVo"/>
+	
+	<resultMap class="pmPriceVo" id="pmPriceVo">
+		<result property="id" column="id"/>
+		<result property="pmId" column="pm_info_id"/>
+	</resultMap>
+	
+	<!-- 根据shardingIndex查询pm_price表的pmIds -->
+	<select id="getPmInfoIdsFromPmPriceForOfflineData" resultMap="pmPriceVo">
+		/*getPmInfoIdsFromPmPriceForOfflineData */
+		select id,pm_info_id
+		  from pm_price
+		 where 
+		   mod (id, 96) = #shardingIndex#
+		   and id &gt; #offset#
+	   <isNotNull property="createTime" >
+		   and create_time &gt; #createTime#
+	   </isNotNull>
+	   order by id limit 0,1000
+	</select>
+	
+	<!-- 根据productIds查询pm_price表数据 -->
+	<select id="getPmPricesByProductIds" resultMap="pmPriceVo">
+		/* getPmPricesByProductIds */
+		select id,pm_info_id
+		  from pm_price
+		 where product_id in 
+		 <iterate property="productIds" open="(" close=")" conjunction=",">
+	            #productIds[]#
+	     </iterate>
+	</select>
+</sqlMap>

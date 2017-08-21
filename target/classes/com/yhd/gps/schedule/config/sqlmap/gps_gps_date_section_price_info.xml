@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GPSDateSectionPriceInfo">
+
+	<resultMap id="dateSectionPriceInfoVoMap" class="com.yhd.gps.pricechange.vo.DateSectionPriceInfoVo">
+		<result column="id" property="id"/>
+		<result column="PRODUCT_ID" property="productId"/>
+		<result column="PM_INFO_ID" property="pmInfoId"/>
+		<result column="CHANNEL_ID" property="channelId"/>
+		<result column="MAX_PRICE" property="maxPrice"/>
+		<result column="MIN_PRICE" property="minPrice"/>
+		<result column="AVG_PRICE" property="avgPrice"/>
+		<result column="CURRENT_PRICE" property="currentPrice"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="DATE_SECTION_LEVEL" property="dateSectionLevel"/>
+		<result column="MAX_PRICE_PROM_RULE_ID" property="maxPricePromRuleId"/>
+		<result column="MIN_PRICE_PROM_RULE_ID" property="minPricePromRuleId"/>
+		<result column="CURRENT_PRICE_PROM_RULE_ID" property="currentPricePromRuleId"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="UPDATE_TIME" property="updateTime"/>
+	</resultMap>
+
+	<sql id="fullFields">
+		ID,
+		PM_INFO_ID,
+		PRODUCT_ID,
+		DATE_SECTION_LEVEL,
+		START_DATE,
+		END_DATE,
+		MAX_PRICE,
+		MIN_PRICE,
+		AVG_PRICE,
+		CURRENT_PRICE,
+		CHANNEL_ID,
+		MAX_PRICE_PROM_RULE_ID,
+		MIN_PRICE_PROM_RULE_ID,
+		CURRENT_PRICE_PROM_RULE_ID,
+		CREATE_TIME,
+		UPDATE_TIME
+	</sql>
+
+	<insert id="insertDateSectionPriceInfoVo">
+		/* insertDateSectionPriceInfoVo */
+		<selectKey keyProperty="id" resultClass="long" type="post">
+			select last_insert_id() as ID
+    	</selectKey>
+		insert into DATE_SECTION_PRICE_HISTORY
+			(ID,
+			PM_INFO_ID,
+			PRODUCT_ID,
+			DATE_SECTION_LEVEL,
+			START_DATE,
+			END_DATE,
+			MAX_PRICE,
+			MIN_PRICE,
+			AVG_PRICE,
+			CURRENT_PRICE,
+			CHANNEL_ID,
+			MAX_PRICE_PROM_RULE_ID,
+			MIN_PRICE_PROM_RULE_ID,
+			CURRENT_PRICE_PROM_RULE_ID,
+			CREATE_TIME,
+			UPDATE_TIME)
+		values
+			(#id#, #pmInfoId#, #productId#,
+			#dateSectionLevel#,
+			#startDate#, #endDate#, #maxPrice#, #minPrice#, #avgPrice#, #currentPrice#,
+			#channelId#, #maxPricePromRuleId#,
+			#minPricePromRuleId#, #currentPricePromRuleId#,
+			now(), now())
+	</insert>
+
+	<update id="updateDateSectionPriceInfoVo">
+		/* updateDateSectionPriceInfoVo */
+		update DATE_SECTION_PRICE_HISTORY set
+		update_time = now()
+		<isNotNull prepend="," property="pmInfoId">
+			PM_INFO_ID = #pmInfoId#
+		</isNotNull>
+		<isNotNull prepend="," property="productId">
+			PRODUCT_ID = #productId#
+		</isNotNull>
+		<isNotNull prepend="," property="dateSectionLevel">
+			DATE_SECTION_LEVEL = #dateSectionLevel#
+		</isNotNull>
+		<isNotNull prepend="," property="startDate">
+			START_DATE = #startDate#
+		</isNotNull>
+		<isNotNull prepend="," property="endDate">
+			END_DATE = #endDate#
+		</isNotNull>
+		<isNotNull prepend="," property="maxPrice">
+			MAX_PRICE = #maxPrice#
+		</isNotNull>
+		<isNotNull prepend="," property="minPrice">
+			MIN_PRICE = #minPrice#
+		</isNotNull>
+		<isNotNull prepend="," property="avgPrice">
+			AVG_PRICE = #avgPrice#
+		</isNotNull>
+		<isNotNull prepend="," property="currentPrice">
+			CURRENT_PRICE = #currentPrice#
+		</isNotNull>
+		<isNotNull prepend="," property="channelId">
+			CHANNEL_ID = #channelId#
+		</isNotNull>
+		<isNotNull prepend="," property="maxPricePromRuleId">
+			MAX_PRICE_PROM_RULE_ID = #maxPricePromRuleId#
+		</isNotNull>
+		<isNotNull prepend="," property="minPricePromRuleId">
+			MIN_PRICE_PROM_RULE_ID = #minPricePromRuleId#
+		</isNotNull>
+		<isNotNull prepend="," property="currentPricePromRuleId">
+			CURRENT_PRICE_PROM_RULE_ID = #currentPricePromRuleId#
+		</isNotNull>
+		where id = #id#
+	</update>
+
+	<select id="queryDateSectionPriceInfoByPmIdAndDateSection" resultMap="dateSectionPriceInfoVoMap">
+		/* queryDateSectionPriceInfoByPmIdAndDateSection */
+		select
+		<include refid="fullFields"/>
+		from DATE_SECTION_PRICE_HISTORY
+		where
+		<iterate conjunction="," property="pmInfoIds" open=" PM_INFO_ID IN (" close=")">
+			#pmInfoIds[]#
+		</iterate>
+		<isNotNull property="channelId">
+			AND CHANNEL_ID = #channelId#
+		</isNotNull>
+		<isNotNull property="dateSectionLevel">
+			AND DATE_SECTION_LEVEL = #dateSectionLevel#
+		</isNotNull>
+	</select>
+	
+	<delete id="deleteDateSectionPriceInfo">
+		/* deleteDateSectionPriceInfo */
+		delete from DATE_SECTION_PRICE_HISTORY
+		where 1 = 1
+		<iterate conjunction="," property="pmInfoIds" open=" and PM_INFO_ID IN (" close=")">
+			#pmInfoIds[]#
+		</iterate>
+		<isNotNull prepend=" and " property="channelId">
+			CHANNEL_ID = #channelId#
+		</isNotNull>
+		<isNotNull prepend=" and " property="dateSectionLevel">
+			DATE_SECTION_LEVEL = #dateSectionLevel#
+		</isNotNull>
+	</delete>
+
+	<!-- 查询101,103,104,107渠道和统计类型是3个月的无用记录 -->
+	<select id="queryDateSectionPriceInfoByChannelId" resultClass="Long">
+		/* queryDateSectionPriceInfoByChannelId */
+		select id from DATE_SECTION_PRICE_HISTORY
+		where channel_id in (101,103,104,107) or date_section_level= 3 limit 0,1000
+	</select>
+	
+	<!-- 删除无用的记录 -->
+    <delete id="deleteDateSectionPriceHistoryByIds" parameterClass="map">
+    	/* deleteDateSectionPriceHistoryByIds */
+        delete from DATE_SECTION_PRICE_HISTORY
+        where id in
+		<iterate prepend=" " property="ids" open="(" close=")" conjunction=",">
+			#ids[]#
+        </iterate>
+    </delete>
+</sqlMap>

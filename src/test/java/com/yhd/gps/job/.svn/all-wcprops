@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/!svn/ver/1832999/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job
+END
+ComputeModePriceJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/!svn/ver/1819488/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/ComputeModePriceJobTest.java
+END
+GPSPromotionDataesCleanJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/!svn/ver/1819488/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/GPSPromotionDataesCleanJobTest.java
+END
+GpsProductSyncJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/!svn/ver/1624030/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/GpsProductSyncJobTest.java
+END
+PromRuleSoldNumResetJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/!svn/ver/1819488/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/PromRuleSoldNumResetJobTest.java
+END
+GpsPriceChangeMsgCleanJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/!svn/ver/1819488/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/GpsPriceChangeMsgCleanJobTest.java
+END
+PmPriceDataCleanJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/!svn/ver/1832999/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/PmPriceDataCleanJobTest.java
+END
+PromotionCompareJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/!svn/ver/1819488/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/PromotionCompareJobTest.java
+END
+GpsHistoryPriceChangeMsgDealJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/!svn/ver/1642133/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/GpsHistoryPriceChangeMsgDealJobTest.java
+END
+GpsPriceChangeMsgSendJobTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/job/GpsPriceChangeMsgSendJobTest.java
+END

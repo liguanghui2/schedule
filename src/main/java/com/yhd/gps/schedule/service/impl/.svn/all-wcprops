@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/!svn/ver/1830369/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/service/impl
+END
+PriceBoardDataRecordServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 167
+/svn/!svn/ver/1829427/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/service/impl/PriceBoardDataRecordServiceImpl.java
+END
+ShardingIndexServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/!svn/ver/1830369/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/service/impl/ShardingIndexServiceImpl.java
+END
+GoldCoinPriceChangeHistoryServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/svn/!svn/ver/1825910/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/service/impl/GoldCoinPriceChangeHistoryServiceImpl.java
+END

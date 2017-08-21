@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/!svn/ver/1829617/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/exception
+END
+GpsScheduleBusinessExceptionTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/!svn/ver/1829617/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/exception/GpsScheduleBusinessExceptionTest.java
+END
+GetProductNeedFlushCache.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/exception/GetProductNeedFlushCache.java
+END
+InvokeInvalidMethodExceptionTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/exception/InvokeInvalidMethodExceptionTest.java
+END

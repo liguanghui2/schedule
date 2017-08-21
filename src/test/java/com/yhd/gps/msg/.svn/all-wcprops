@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/!svn/ver/1825411/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/msg
+END
+GoldCoinPriceChangeMsgSenderTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/!svn/ver/1825411/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/msg/GoldCoinPriceChangeMsgSenderTest.java
+END
+PromotionPriceChangeMsgSenderTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/msg/PromotionPriceChangeMsgSenderTest.java
+END
+GPSPriceChangeMsgSenderTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/!svn/ver/1760183/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/java/com/yhd/gps/msg/GPSPriceChangeMsgSenderTest.java
+END

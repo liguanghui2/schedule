@@ -1,0 +1,921 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.yihaodian.public</groupId>
+		<artifactId>public-pom</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.yhd.gps</groupId>
+	<artifactId>gps-schedule</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>gps-task-scheduler</name>
+
+	<properties>
+		<front-busystock-client.version>3.2.11-SNAPSHOT</front-busystock-client.version>
+		<spring-webmvc.version>3.2.0.RELEASE</spring-webmvc.version>
+		<spring-orm.version>3.2.0.RELEASE</spring-orm.version>
+		<ycc-client.version>2.1.1-SNAPSHOT</ycc-client.version>
+		<kafka.version>0.8.2.1</kafka.version>
+
+		<!-- maven -->
+		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-timestamp-plugin.version>0.1</maven-timestamp-plugin.version>
+		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
+		<maven-svn-revision-number-plugin.version>1.6</maven-svn-revision-number-plugin.version>
+		<maven-antrun-plugin.version>1.6</maven-antrun-plugin.version>
+
+		<!-- history price -->
+		<front-databus.version>0.0.4-SNAPSHOT</front-databus.version>
+
+		<!-- unit -->
+		<junit.version>4.5</junit.version>
+		<hsqldb.version>2.3.0</hsqldb.version>
+		<dbunit.version>2.5.0</dbunit.version>
+		<unitils.version>3.3.1-SNAPSHOT</unitils.version>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<hsqldb.version>2.3.0</hsqldb.version>
+		<dbunit.version>2.5.0</dbunit.version>
+		<unitils.version>3.3.1-SNAPSHOT</unitils.version>
+		<aspectjrt.version>1.6.1</aspectjrt.version>
+		<commons-jexl.version>1.1</commons-jexl.version>
+		<mysql-connector-java.version>5.1.33</mysql-connector-java.version>
+		<oracle-jdbc-driver.version>11.2.0.3.0</oracle-jdbc-driver.version>
+		<quartz.version>1.5.2</quartz.version>
+		<ydd.version>2.1.1-SNAPSHOT</ydd.version>
+		<tomcat-jdbc.version>7.0.30</tomcat-jdbc.version>
+		<ehcache-core.version>2.6.5</ehcache-core.version>
+		<jumper.version>0.5.4-SNAPSHOT</jumper.version>
+		<front-databus.version>0.0.4-SNAPSHOT</front-databus.version>
+		<ycache-client.version>2.3.2.1-SNAPSHOT</ycache-client.version>
+		<slf4j-api.version>1.6.2</slf4j-api.version>
+		<javax.mail.version>1.4.5</javax.mail.version>
+		<dal-client.version>2.1.1-SNAPSHOT</dal-client.version>
+		<!-- 测试版本 切记勿上线 -->
+		<!--pss-client.version>2.6.0.6-SNAPSHOT</pss-client.version-->
+		<pss-client.version>2.7.23-SNAPSHOT</pss-client.version>
+		<pool-management-client.version>2.0.8-SNAPSHOT</pool-management-client.version>
+		<mybatis.version>2.3.5</mybatis.version>
+		<!-- kira客户端版本 1.3.4-SNAPSHOT-->
+		<kira-client.version>1.3.4-SNAPSHOT</kira-client.version>
+		<javassist.version>3.20.0-GA</javassist.version>
+		<!-- for ut -->
+		<powermock-core.version>1.5.5</powermock-core.version>
+		<powermock-module-junit4.version>1.5.5</powermock-module-junit4.version>
+		<powermock-api-mockito.version>1.5.5</powermock-api-mockito.version>
+		<powermock-module-junit4-rule.version>1.5.5</powermock-module-junit4-rule.version>
+		<powermock-classloading-xstream.version>1.5.5</powermock-classloading-xstream.version>
+		<powermock-easymock.version>1.5.5</powermock-easymock.version>
+		<!-- maven -->
+		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-timestamp-plugin.version>0.1</maven-timestamp-plugin.version>
+		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
+		<maven-svn-revision-number-plugin.version>1.6</maven-svn-revision-number-plugin.version>
+		<maven-antrun-plugin.version>1.6</maven-antrun-plugin.version>
+		<hedwig.version>0.2.6-SNAPSHOT</hedwig.version>
+		<easymock.version>3.2</easymock.version>
+		<ymongoclient.version>0.0.5-SNAPSHOT</ymongoclient.version>
+		<detector-monitor-client.version>1.0.3-SNAPSHOT</detector-monitor-client.version>
+		<inshop-openapi-ws-client.version>1.0-SNAPSHOT</inshop-openapi-ws-client.version>
+		<!-- 价格后台客户端 -->
+		<backend-price-api.version>5.1.4-SNAPSHOT</backend-price-api.version>
+		<!-- 离线客户端 -->
+		<god-client.version>1.0.0-SNAPSHOT</god-client.version>
+		<!-- EDM -->
+		<edm.version>0.0.4-SNAPSHOT</edm.version>
+		<!-- PIS接口 -->
+		<pis-core-api.version>2.0-SNAPSHOT</pis-core-api.version>
+		<pis-services-api.version>2.0-SNAPSHOT</pis-services-api.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring-orm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.configcentre</groupId>
+			<artifactId>ycc-client</artifactId>
+			<version>${ycc-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-io</artifactId>
+					<groupId>commons-io</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.front</groupId>
+			<artifactId>front-busystock-client</artifactId>
+			<version>${front-busystock-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hedwig-client</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring-webmvc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>front-databus</groupId>
+			<artifactId>front-databus</artifactId>
+			<version>${front-databus.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jumper-consumerclient</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hedwig-provider</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>${dbunit.version}</version>
+			<type>jar</type>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-core</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>ognl</artifactId>
+					<groupId>ognl</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-test</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-dbunit</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-jdbc</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-spring</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-test</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-database</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>net.sf.ehcache</groupId>
+					<artifactId>ehcache</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-jdbc</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>hedwig-client</artifactId>
+			<version>${hedwig.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-aspects</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>hedwig-provider</artifactId>
+			<version>${hedwig.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>hedwig-common</artifactId>
+			<version>${hedwig.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>hedwig-zk</artifactId>
+			<version>${hedwig.version}</version>
+		</dependency>
+
+		<!-- PSS客户端 -->
+		<dependency>
+			<groupId>com.yhd.pss</groupId>
+			<artifactId>pss-client</artifactId>
+			<version>${pss-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>pool-management-client</artifactId>
+					<groupId>com.yhd.shareservice</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hedwig-client</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ymongoclient</artifactId>
+					<groupId>com.yihaodian.ymongo</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.yhd.shareservice</groupId>
+			<artifactId>pool-management-client</artifactId>
+			<version>${pool-management-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hedwig-client</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency>
+		<!-- 价格后台客户端 -->
+		<dependency>
+			<groupId>com.yihaodian.backend.price</groupId>
+			<artifactId>backend-price-api</artifactId>
+			<version>${backend-price-api.version}</version>
+		</dependency>
+		<!-- 离线客户端 -->
+		<dependency>
+			<groupId>com.yhd.god</groupId>
+			<artifactId>god-client</artifactId>
+			<version>${god-client.version}</version>
+		</dependency>
+		<!-- edm客户端 -->
+		<dependency>
+           <groupId>com.yhd.edm.service.client</groupId>
+           <artifactId>edm-service-client</artifactId>
+           <version>${edm.version}</version>
+		</dependency>
+		<!-- PIS接口 -->
+		<dependency>
+			<groupId>com.yihaodian.pis</groupId>
+		  	<artifactId>pis-core-api</artifactId>
+		  	<version>${pis-core-api.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.yihaodian.pis</groupId>
+			<artifactId>pis-services-api</artifactId>
+			<version>${pis-services-api.version}</version>
+			<exclusions>
+       			<exclusion>
+					<artifactId>ymongoclient</artifactId>
+					<groupId>com.yihaodian.ymongo</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- kira客户端 -->
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>kira-client</artifactId>
+			<version>${kira-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hedwig-common</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hedwig-provider</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>${javassist.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>${dbunit.version}</version>
+			<type>jar</type>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-core</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>ognl</artifactId>
+					<groupId>ognl</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-dbunit</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-spring</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-database</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>net.sf.ehcache</groupId>
+					<artifactId>ehcache</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectjrt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-jexl</groupId>
+			<artifactId>commons-jexl</artifactId>
+			<version>${commons-jexl.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.t3rd</groupId>
+			<artifactId>oracle-jdbc-driver</artifactId>
+			<version>${oracle-jdbc-driver.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>ydd</artifactId>
+			<version>${ydd.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>${tomcat-jdbc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache-core.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>jumper-producerclient</artifactId>
+			<version>${jumper.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>jumper-consumerclient</artifactId>
+			<version>${jumper.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hedwig-common</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>front-databus</groupId>
+			<artifactId>front-databus</artifactId>
+			<version>${front-databus.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.yihaodian.architecture</groupId>
+					<artifactId>hedwig-provider</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.architecture</groupId>
+			<artifactId>ycache-client</artifactId>
+			<version>${ycache-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hedwig-zk</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hedwig-common</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>ycc-client</artifactId>
+					<groupId>com.yihaodian.configcentre</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.ydal</groupId>
+			<artifactId>dal-client</artifactId>
+			<version>${dal-client.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>xwork</artifactId>
+					<groupId>com.opensymphony</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-logging-api</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-jcl</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hedwig-common</artifactId>
+					<groupId>com.yihaodian.architecture</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.yihaodian.ymongo</groupId>
+			<artifactId>ymongoclient</artifactId>
+			<version>${ymongoclient.version}</version>
+		</dependency>			
+		<!-- powermock for unit test -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-core</artifactId>
+			<version>${powermock-core.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>org.javassist</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock-module-junit4.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock-api-mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule</artifactId>
+			<version>${powermock-module-junit4-rule.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-classloading-xstream</artifactId>
+			<version>${powermock-classloading-xstream.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-easymock</artifactId>
+			<version>${powermock-easymock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>${easymock.version}</version>
+		</dependency>
+		<dependency>
+            <groupId>com.yihaodian.architecture</groupId>
+            <artifactId>detector-monitor-client</artifactId>
+            <version>${detector-monitor-client.version}</version>
+        </dependency>
+        <!-- open-api -->
+        <dependency>
+ 			 <groupId>com.yhd.inshop.openapi</groupId>
+  			 <artifactId>inshop-openapi-ws-client</artifactId>
+  			 <version>${inshop-openapi-ws-client.version}</version>
+  			 <exclusions>
+  			    <exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			 </exclusions>
+		</dependency>
+		
+		<!-- kafka -->
+		<dependency>
+		  <groupId>org.apache.kafka</groupId>
+		  <artifactId>kafka_2.10</artifactId>
+		  <version>${kafka.version}</version>
+		  <exclusions>
+		  <!-- 排除kafka中zookeeper版本同hedwig中ZK版本冲突 -->
+		  	<exclusion>
+		  		<artifactId>zookeeper</artifactId>
+		  		<groupId>org.apache.zookeeper</groupId>
+		  	</exclusion>
+		  </exclusions>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+					<skipTests>false</skipTests>
+					<testFailureIgnore>false</testFailureIgnore>
+					<!-- <argLine>-Dglobal.config.path=${project.basedir}/../server/src/test/resources/ycc-config/</argLine> -->
+				</configuration>
+			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-source-plugin</artifactId> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>attach-sources</id> -->
+			<!-- <goals> -->
+			<!-- <goal>jar</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-compiler-plugin</artifactId> -->
+			<!-- <version>${maven-compiler-plugin.version}</version> -->
+			<!-- <configuration> -->
+			<!-- <source>1.6</source> -->
+			<!-- <target>1.6</target> -->
+			<!-- <encoding>UTF-8</encoding> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
+			<!-- <plugin> -->
+			<!-- <inherited>true</inherited> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-source-plugin</artifactId> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>attach-sources</id> -->
+			<!-- <goals> -->
+			<!-- <goal>jar</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-jar-plugin</artifactId> -->
+			<!-- <version>${maven-jar-plugin.version}</version> -->
+			<!-- <configuration> -->
+			<!-- <jarName>${project.artifactId}-${project.version}-${SVN.committedRevision}-${timestamp}</jarName> -->
+			<!-- <addMavenDescriptor>false</addMavenDescriptor> -->
+			<!-- <archive> -->
+			<!-- <index>true</index> -->
+			<!-- <manifest> -->
+			<!-- <addClasspath>true</addClasspath> -->
+			<!-- <addDefaultImplementationEntries>true</addDefaultImplementationEntries> -->
+			<!-- <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries> -->
+			<!-- </manifest> -->
+			<!-- <manifestEntries> -->
+			<!-- <Implementation-Version> -->
+<!--								${project.artifactId}-${project.version}-${SVN.committedRevision}-${timestamp}-->
+<!--                            </Implementation-Version>-->
+<!--							<Specification-Version>-->
+<!--								${project.artifactId}-${project.version}-${SVN.committedRevision}-${timestamp}-->
+<!--                            </Specification-Version>-->
+<!--							<Build-Time>${timestamp}</Build-Time>-->
+<!--						</manifestEntries>-->
+<!--					</archive>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+			<!-- 获取SVN当前版本号 -->
+			<!-- <plugin> -->
+	<!-- <groupId>com.google.code.maven-svn-revision-number-plugin</groupId> -->
+			<!-- <artifactId>maven-svn-revision-number-plugin</artifactId> -->
+			<!-- <version>${maven-svn-revision-number-plugin.version}</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <goals> -->
+			<!-- <goal>revision</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- <configuration> -->
+			<!-- <entries> -->
+			<!-- <entry> -->
+			<!-- <prefix>SVN</prefix> -->
+			<!-- </entry> -->
+			<!-- </entries> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
+			<!-- 生成MD5校验文件 -->
+			<!-- <plugin> -->
+			<!-- <artifactId>maven-antrun-plugin</artifactId> -->
+			<!-- <version>${maven-antrun-plugin.version}</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <phase>package</phase> -->
+			<!-- <configuration> -->
+			<!-- <target> -->
+			<!-- <checksum> -->
+			<!-- <fileset dir="target"> -->
+			<!-- <include name="*"/> -->
+			<!-- </fileset> -->
+			<!-- </checksum> -->
+			<!-- </target> -->
+			<!-- </configuration> -->
+			<!-- <goals> -->
+			<!-- <goal>run</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+		</plugins>
+	</build>
+	<!-- <distributionManagement> -->
+	<!-- <repository> -->
+	<!-- <id>yihaodian-releases</id> -->
+	<!-- <name>YiHaoDian Releases Repository</name> -->
+	<!-- <url>http://maven.yihaodian.cn/content/repositories/releases/</url> -->
+	<!-- </repository> -->
+	<!-- <snapshotRepository> -->
+	<!-- <id>yihaodian-snapshots</id> -->
+	<!-- <name>YiHaoDian Snapshots Repository</name> -->
+	<!-- <url>http://maven.yihaodian.cn/content/repositories/snapshots/</url> -->
+	<!-- </snapshotRepository> -->
+	<!-- </distributionManagement> -->
+</project>

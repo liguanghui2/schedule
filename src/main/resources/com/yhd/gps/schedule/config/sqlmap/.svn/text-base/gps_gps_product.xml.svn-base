@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GpsProduct">	
+	<typeAlias type="com.yhd.gps.backendprice.vo.GpsProductVo" alias="GpsProductVo"/>
+	
+	<resultMap class="com.yhd.gps.backendprice.vo.GpsProductVo" id="GpsProductVoMap">
+		<result column="id"  property="id"/>
+		<result column="product_code" property="productCode"/>
+		<result column="product_cname"  property="productCName"/>
+		<result column="product_ename"  property="productEName"/>
+		<result column="product_sale_type" property="productSaleType"/>
+		<result column="product_list_price" property="productListPrice"/>
+		<result column="product_type" property="productType"/>
+		<result column="category_id" property="categoryId"/>
+		<result column="category_search_name" property="categorySearchName"/>
+		<result column="is_deleted" property="isDeleted"/>
+		<result column="create_time" property="createTime"/>
+		<result column="update_time" property="updateTime"/>
+	</resultMap>
+
+    <!-- 通过id查询GPS_PRODUCT -->	
+    <select id="bs_queryGpsProductById" resultMap="GpsProductVoMap">
+		/* bs_queryGpsProductById */
+        select id, product_code, product_cname, product_ename, product_sale_type, product_list_price, product_type, category_id, category_search_name,
+        	   is_deleted, create_time, update_time
+		from gps_product where id = #id#
+	</select>
+	
+	<!-- 保存GPS_PRODUCT -->
+	<insert id="bs_insertGpsProduct">
+		/* bs_insertGpsProduct */
+		insert into gps_product(id, product_code, product_cname, product_ename, product_sale_type, product_list_price, product_type, category_id, category_search_name, is_deleted, create_time, update_time)
+		values (#id#, #productCode#, #productCName#, #productEName#, #productSaleType#, #productListPrice#, #productType#, #categoryId#, #categorySearchName#, #isDeleted#, #createTime#, #updateTime#)        
+	</insert>
+	
+	<!-- 更新GPS_PRODUCT -->	
+	<update id="bs_updateGpsProductById">
+		/* bs_updateGpsProductById */
+		update gps_product set
+		   <isNull property="updateTime">
+		      update_time = now()
+		   </isNull>
+		   <isNotNull property="updateTime">
+		      update_time = #updateTime#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productCode">
+		      product_code = #productCode#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productCName">
+		      product_cname = #productCName#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productEName">
+		      product_ename = #productEName#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productSaleType">
+		      product_sale_type = #productSaleType#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productListPrice">
+		      product_list_price = #productListPrice#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productType">
+		      product_type = #productType#
+		   </isNotNull>
+		   <isNotNull prepend="," property="categoryId">
+		      category_id = #categoryId#
+		   </isNotNull>
+		   <isNotNull prepend="," property="categorySearchName">
+		      category_search_name = #categorySearchName#
+		   </isNotNull>
+		   <isNotNull prepend="," property="isDeleted">
+		      is_deleted = #isDeleted#
+		   </isNotNull>
+		   <isNotNull prepend="," property="createTime">
+		      create_time = #createTime#
+		   </isNotNull>
+		  where id = #id#
+	</update>
+	
+	<!-- 保存GPS_PRODUCT，若主键重复则更新 -->
+	<insert id="bs_insertOrUpdateGpsProduct">
+		/* bs_insertOrUpdateGpsProduct */
+		insert into gps_product(id, product_code, product_cname, product_ename, product_sale_type, product_list_price, product_type, category_id, category_search_name, is_deleted, create_time, update_time)
+		values (#id#, #productCode#, #productCName#, #productEName#, #productSaleType#, #productListPrice#, #productType#, #categoryId#, #categorySearchName#, #isDeleted#, #createTime#, #updateTime#) 
+		on duplicate key update update_time = now()     
+		   <isNotNull prepend="," property="productCode">
+		      product_code = #productCode#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productCName">
+		      product_cname = #productCName#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productEName">
+		      product_ename = #productEName#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productSaleType">
+		      product_sale_type = #productSaleType#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productListPrice">
+		      product_list_price = #productListPrice#
+		   </isNotNull>
+		   <isNotNull prepend="," property="productType">
+		      product_type = #productType#
+		   </isNotNull>
+		   <isNotNull prepend="," property="categoryId">
+		      category_id = #categoryId#
+		   </isNotNull>
+		   <isNotNull prepend="," property="categorySearchName">
+		      category_search_name = #categorySearchName#
+		   </isNotNull>
+		   <isNotNull prepend="," property="isDeleted">
+		      is_deleted = #isDeleted#
+		   </isNotNull>
+		   <isNotNull prepend="," property="createTime">
+		      create_time = #createTime#
+		   </isNotNull>
+	</insert>
+	
+	<!-- 通过id的list批量删除GPS_PRODUCT -->	
+	<delete id="bs_deleteGpsProductByIds">
+		delete from gps_product 
+		 where id in 
+		  <iterate conjunction="," open="(" close=")">
+		   #[]#
+		  </iterate>
+	</delete>
+	
+	<select id="gps_getProductIdNotInGpsPmPrice" resultClass="Long">
+		/* gps_getProductIdNotInGpsPmPrice */
+		select p.product_id from pm_price p where not exists(select id from gps_product gp where p.product_id=gp.id) limit 0,1000
+	</select>
+	
+	<select id="gps_getProductIdNotInGpsPromRule" resultClass="Long">
+		/* gps_getProductIdNotInGpsPromRule */
+		select p.product_id from product_prom_rule p where not exists(select id from gps_product gp where p.product_id=gp.id) limit 0,1000
+	</select>
+	
+	<select id="gps_batchGetGpsProductIdsByIds" resultMap="GpsProductVoMap">
+		/* gps_batchGetGpsProductIdsByIds */
+		select id, product_code, product_cname, product_ename, product_sale_type, product_list_price, product_type, category_id, category_search_name, is_deleted, create_time, update_time 
+		from gps_product where id in 
+		<iterate conjunction="," property="ids" open="(" close=")">
+		   #ids[]#
+		</iterate>
+	</select>
+	
+</sqlMap>

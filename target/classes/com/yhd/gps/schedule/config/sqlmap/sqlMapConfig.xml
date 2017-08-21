@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings cacheModelsEnabled="false" enhancementEnabled="true" lazyLoadingEnabled="true" maxRequests="64" maxSessions="32" maxTransactions="16"
+		useStatementNamespaces="false"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/history_price_change_msg.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/sharding_index.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_gps_date_section_price_info.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_gps_product.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_gps_promotion_log.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_gps_promotion.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_jumper_message_log.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_misc_config.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_price_change_msg.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_product_prom_rule_log.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_product_prom_rule.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_promotion_price_change_msg.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_sync_data_log.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/prod_pm_info.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/prod_product.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/prod_merchant.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_data_process_scanner.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/prod_promotion.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/jd_book_sync_data.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/jd_book_sync_log.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_pm_area_price.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_schedule_warning_rule.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gps_pm_price.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gold_coin_price_change_msg.xml"/>
+	<sqlMap resource="com/yhd/gps/schedule/config/sqlmap/gold_coin_price_change_history.xml"/>
+</sqlMapConfig>

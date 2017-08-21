@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="historyPriceBoard">    
+    <!-- 插入每日售价看板数据 -->
+	<insert id="insertPriceBoardDailyData">
+		/* insertPriceBoardDailyData */
+		INSERT INTO history_price_daily
+			(id, product_id, pm_info_id, merchant_id, statistics_date,min_price, min_price_rule_type, min_price_duration, min_price_frequency, max_price, 
+				max_price_rule_type,max_price_duration, max_price_frequency, mode_price, mode_price_rule_type, mode_price_duration, mode_price_frequency, create_time)
+		VALUES
+			(#id#, #productId#, #pmInfoId#, #merchantId#, #statisticsDate#, #minPrice#, #minPriceRuleType#, #minPriceDuration#, #minPriceFrequency#,#maxPrice#,  
+				#maxPriceRuleType#,#maxPriceDuration#, #maxPriceFrequency#, #modePrice#, #modePriceRuleType#, #modePriceDuration#,#modePriceFrequency#,#createTime#)
+	</insert>
+	
+	<!-- 插入每周售价看板数据 -->
+	<insert id="insertPriceBoardWeeklyData">
+		/* insertPriceBoardWeeklyData */
+		INSERT INTO history_price_weekly
+			(id, product_id, pm_info_id, merchant_id, year, week_num, week_start_date, week_end_date, min_price, min_price_rule_type, min_price_duration, min_price_frequency, max_price, 
+				max_price_rule_type,max_price_duration, max_price_frequency, mode_price, mode_price_rule_type, mode_price_duration, mode_price_frequency, create_time)
+		VALUES
+			(#id#, #productId#, #pmInfoId#, #merchantId#, #year#, #weekNum# ,#weekStartDate#, #weekEndDate#, #minPrice#, #minPriceRuleType#, #minPriceDuration#, #minPriceFrequency#,#maxPrice#,  
+				#maxPriceRuleType#,#maxPriceDuration#, #maxPriceFrequency#, #modePrice#, #modePriceRuleType#, #modePriceDuration#,#modePriceFrequency#,#createTime#)
+	</insert>
+	
+	<!-- 插入月售价看板数据 -->
+	<insert id="insertPriceBoardMonthlyData">
+		/* insertPriceBoardMonthlyData */
+		INSERT INTO history_price_monthly
+			(id, product_id, pm_info_id, merchant_id, year, month_num, month_start_date, month_end_date, statistics_type, min_price, min_price_rule_type, min_price_duration, min_price_frequency, max_price, 
+				max_price_rule_type,max_price_duration, max_price_frequency, mode_price, mode_price_rule_type, mode_price_duration, mode_price_frequency, create_time)
+		VALUES
+			(#id#, #productId#, #pmInfoId#, #merchantId#, #year#, #monthNum# ,#monthStartDate#, #monthEndDate#, #statisticsType#, #minPrice#, #minPriceRuleType#, #minPriceDuration#, #minPriceFrequency#,#maxPrice#,  
+				#maxPriceRuleType#,#maxPriceDuration#, #maxPriceFrequency#, #modePrice#, #modePriceRuleType#, #modePriceDuration#,#modePriceFrequency#,#createTime#)
+	</insert>
+	
+	<!-- 根据周次删除周历史价格数据 -->
+	<delete id="deleteWeekPriceBoardByWeekNum" parameterClass="map">
+		delete from history_price_weekly where week_num = #weekNum#
+	</delete>
+</sqlMap>

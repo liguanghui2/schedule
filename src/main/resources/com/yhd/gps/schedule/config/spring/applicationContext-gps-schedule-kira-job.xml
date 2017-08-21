@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC
+        "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="no" default-lazy-init="false" default-dependency-check="none">
+
+	<!-- 过期数据清理job -->
+	<bean id="gpsDataCleanJob" class="com.yhd.gps.schedule.job.GPSPromotionDataesCleanJob">
+		<property name="promotionDataesCleanShardingDataProcessor" ref="promotionDataesCleanShardingDataProcessor"/>
+	</bean>
+	<bean id="gpsDataCleanJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="gpsDataCleanJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_outDatePromRule_clean_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="过期数据清理定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<!-- 如果onlyRunOnSingleProcess值为true,则选择随机选择一个可用的执行地点执行。 如果onlyRunOnSingleProcess值为false,则将在全部可用的执行地点上执行。 -->
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+
+	<!-- 清理价格消息变化表的过期数据 -->
+	<bean id="priceChangeTaskCleanJob" class="com.yhd.gps.schedule.job.PriceChangeTaskCleanJob" lazy-init="false">
+		<property name="priceChangeTaskCleanShardingDataProcessor" ref="priceChangeTaskCleanShardingDataProcessor"/>
+	</bean>
+	<bean id="priceChangeTaskCleanJobDetailCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="priceChangeTaskCleanJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_price_change_msg_clean_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="清理促销价扫描记录表数据定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+
+	<!-- GpsProduct数据同步job -->
+	<bean id="gpsProductSyncJob" class="com.yhd.gps.schedule.job.GpsProductSyncJob">
+		<property name="gpsProductSyncShardingDataProcessor" ref="gpsProductSyncShardingDataProcessor"/>
+	</bean>
+	<bean id="gpsProductSyncJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="gpsProductSyncJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_gps_product_sync_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="GpsProduct数据同步定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="locationsToRunJob" value="${gpsProductSyncJobCronTrigger.locationsToRunJob}"/>
+		<property name="disabled" value="true"/>
+	</bean>
+
+	<!-- GPS价格变化消息发送 -->
+	<bean id="gpsPriceChangeMsgSendJob" class="com.yhd.gps.schedule.job.GpsPriceChangeMsgSendJob">
+		<property name="gpsPriceChangeMsgSendProcessor" ref="gpsPriceChangeMsgSendProcessor"/>
+	</bean>
+	<bean id="gpsPriceChangeMsgSendJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="gpsPriceChangeMsgSendJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_price_change_msg_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="GPS价格变化消息发送定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- Promotion价格变化消息发送 -->
+	<bean id="promotionPriceChangeMsgSendJob" class="com.yhd.gps.schedule.job.PromotionPriceChangeMsgSendJob">
+		<property name="promotionPriceChangeMsgSendProcessor" ref="promotionPriceChangeMsgSendProcessor"/>
+	</bean>
+	<bean id="promotionPriceChangeMsgSendJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="promotionPriceChangeMsgSendJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_price_change_msg_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="Promotion价格变化消息发送定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+
+	<!-- 历史价格统计计算job -->
+	<bean id="historyPriceChangeStatisticJob" class="com.yhd.gps.schedule.job.HistoryPriceChangeStatisticJob">
+		<property name="shardingDataProcessor" ref="historyPriceMsgShardingDataProcessor"/>
+	</bean>
+	<bean id="historyPriceChangeStatisticJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="historyPriceChangeStatisticJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.history_price_change_deal_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="历史价格统计"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 价格促销soldNum重置job -->
+	<bean id="promRuleSoldNumResetJob" class="com.yhd.gps.schedule.job.PromRuleSoldNumResetJob">
+		<property name="resetPromRuleSoldNumShardingDataProcessor" ref="resetPromRuleSoldNumShardingDataProcessor"/>
+	</bean>
+	<bean id="promRuleSoldNumResetJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="promRuleSoldNumResetJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.promRuleSoldNum_reset_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="价格促销已售数量重置定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<!-- 如果onlyRunOnSingleProcess值为true,则选择随机选择一个可用的执行地点执行。 如果onlyRunOnSingleProcess值为false,则将在全部可用的执行地点上执行。 -->
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+
+
+	<!-- 补偿GPS价格变化消息到历史价格表 -->
+	<bean id="compensateGpsPriceChangeMsgSendJob" class="com.yhd.gps.schedule.job.CompensateGpsPriceChangeMsgSendJob">
+		<property name="compensateGpsPriceChangeMsgSendProcessor" ref="compensateGpsPriceChangeMsgSendProcessor"/>
+	</bean>
+	<bean id="compensateGpsPriceChangeMsgSendJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="compensateGpsPriceChangeMsgSendJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_price_change_msg_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="补偿GPS价格变化消息发送定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 补偿历史价格表 -->
+	<bean id="compensateHistoryPriceDataJob" class="com.yhd.gps.schedule.job.CompensateHistoryPriceDataJob">
+		<property name="compensateHistoryPriceDataParallTaskManager" ref="compensateHistoryPriceDataParallTaskManager" />
+	</bean>
+	
+	<bean id="compensateHistoryPriceDataJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="compensateHistoryPriceDataJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_price_change_msg_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="补偿历史价格数据定时任务,只允许在一台机器机器跑"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="true"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- promotion比对job -->
+	<bean id="promotionCompareJob" class="com.yhd.gps.schedule.job.PromotionCompareJob">
+		<property name="compareLPPromotionShardingDataProcessor" ref="compareLPPromotionShardingDataProcessor"/>
+	</bean>
+	<bean id="promotionCompareJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="promotionCompareJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.bs_promotion_compare_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="promotion比对定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="locationsToRunJob" value="${promotionCompareJobCronTrigger.locationsToRunJob}"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 京东图书商品同步Job -->
+	<bean id="jdBookSyncJob" class="com.yhd.gps.schedule.job.JDBookSyncJob">
+		<property name="jdBookSyncShardingDataProcessor" ref="jdBookSyncShardingDataProcessor"/>
+	</bean>
+	<bean id="jdBookSyncJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="jdBookSyncJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.jd_book_sync_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="京东图书入驻一号店抓取图书商品id信息"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 京东日百价格同步job -->
+	<bean id="jdDailyGoodsSyncJob" class="com.yhd.gps.schedule.job.JDDailyGoodsSyncJob">
+		<property name="jdDailyGoodsSyncShardingDataProcessor" ref="jdDailyGoodsSyncShardingDataProcessor"/>
+	</bean>
+	<bean id="jdDailyGoodsSyncJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="jdDailyGoodsSyncJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.jd_daily_goods_sync_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="京东日百价格同步定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<!-- 如果onlyRunOnSingleProcess值为true,则选择随机选择一个可用的执行地点执行。 如果onlyRunOnSingleProcess值为false,则将在全部可用的执行地点上执行。 -->
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 规则执行job -->
+	<bean id="ruleExecuteJob" class="com.yhd.gps.schedule.job.RuleExecuteJob">
+		<property name="ruleExecuteShardingDataProcessor" ref="ruleExecuteShardingDataProcessor"/>
+	</bean>
+	<bean id="ruleExecuteJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="ruleExecuteJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="arguments">
+					<list>
+					    <bean class="com.alibaba.fastjson.JSONObject"/>
+					</list>
+				</property>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.rule_execute_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="规则执行定时任务"/>
+		<property name="asynchronous" value="true"/>
+		<!-- 如果onlyRunOnSingleProcess值为true,则选择随机选择一个可用的执行地点执行。 如果onlyRunOnSingleProcess值为false,则将在全部可用的执行地点上执行。 -->
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 离线数据初始化发送消息Job -->
+	<bean id="initBaseDataMsgSendJob" class="com.yhd.gps.schedule.job.InitBaseDataMsgSendJob">
+		<property name="initOffLineDataShardingDataProcessor" ref="initOffLineDataShardingDataProcessor"/>
+	</bean>
+	<bean id="initBaseDataMsgSendJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="initBaseDataMsgSendJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.init_offline_data_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="初始化离线数据任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	
+	<!-- =============================以下为城市精选定时器 ===============================-->
+	
+	<!-- 处理众数价Job -->
+	<bean id="computeModePriceJob" class="com.yhd.gps.schedule.job.ComputeModePriceJob">
+		<property name="computeModePriceProcessor" ref="computeModePriceProcessor"/>
+	</bean>
+	<bean id="computeModePriceJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="computeModePriceJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.compute_mode_price_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="处理众数价任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 处理建议价job -->
+	<bean id="handleAdvicedPriceJob" class="com.yhd.gps.schedule.job.HandleAdvicedPriceJob">
+		<property name="handleAdvicedPriceProcessor" ref="handleAdvicedPriceProcessor"/>
+	</bean>
+	<bean id="handleAdvicedPriceJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="handleAdvicedPriceJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.handle_adviced_price_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="城市精选处理建议价任务"/>
+		<property name="asynchronous" value="true"/>
+		<!-- 如果onlyRunOnSingleProcess值为true,则选择随机选择一个可用的执行地点执行。 如果onlyRunOnSingleProcess值为false,则将在全部可用的执行地点上执行。 -->
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 城市精选创建普通促销Job -->
+	<bean id="cityPickPromotionJob" class="com.yhd.gps.schedule.job.CityPickPromotionJob">
+		<property name="cityPickPromotionProcessor" ref="cityPickPromotionProcessor"/>
+	</bean>
+	<bean id="cityPickPromotionJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="cityPickPromotionJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.city_pick_promotion_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="城市精选创建普通促销任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+
+	<!-- 城市精选更新敏感品弹性价格区间Job -->
+	<bean id="sensitivePriceUpdateJob" class="com.yhd.gps.schedule.job.SensitivePriceUpdateJob">
+		<property name="sensitivePriceUpdateProcessor" ref="sensitivePriceUpdateProcessor"/>
+	</bean>
+	<bean id="sensitivePriceUpdateJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="sensitivePriceUpdateJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.sensitive_price_update_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="城市精选更新敏感品弹性价格区间"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 保存在售商品到商品定价表Job -->
+	<bean id="priceScheduleMsgSend4AIJob" class="com.yhd.gps.schedule.job.PriceScheduleMsgSend4AIJob">
+		<property name="priceScheduleMsgSend4AIProcessor" ref="priceScheduleMsgSend4AIProcessor"/>
+	</bean>
+	<bean id="priceScheduleMsgSend4AIJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="priceScheduleMsgSend4AIJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.save_schedule_price_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="根据商家ID拉取在售商品并保存在商品定价表"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 定时发送定价当期完整性告警邮件Job -->
+	<bean id="sendPriceScheduleCompletenessJob" class="com.yhd.gps.schedule.job.SendPriceScheduleCompletenessJob">
+		<property name="sendPriceScheduleCompletenessProcessor" ref="sendPriceScheduleCompletenessProcessor"/>
+	</bean>
+	<bean id="sendPriceScheduleCompletenessJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="sendPriceScheduleCompletenessJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.send_price_schedule_completeness_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="发送定价档期完整性警告邮件"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- ===============================售价看板相关========================================== -->
+	<!-- 日售价看板数据处理定时器 -->
+	<bean id="priceBoardDailyJob" class="com.yhd.gps.schedule.job.PriceBoardDailyJob">
+		<property name="dailyPriceBoardDataProcessor" ref="dailyPriceBoardDataProcessor"/>
+	</bean>
+	<bean id="priceBoardDailyJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="priceBoardDailyJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.price_board_daily_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="售价看板每日历史数据处理任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 周售价看板数据处理定时器 -->
+	<bean id="priceBoardWeeklyJob" class="com.yhd.gps.schedule.job.PriceBoardWeeklyJob">
+		<property name="weeklyPriceBoardDataProcessor" ref="weeklyPriceBoardDataProcessor"/>
+	</bean>
+	<bean id="priceBoardWeeklyJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="priceBoardWeeklyJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.price_board_weekly_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="售价看板每周历史数据处理任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- 月售价看板数据处理定时器 -->
+	<bean id="priceBoardMonthlyJob" class="com.yhd.gps.schedule.job.PriceBoardMonthlyJob">
+		<property name="monthlyPriceBoardDataProcessor" ref="monthlyPriceBoardDataProcessor"/>
+	</bean>
+	<bean id="priceBoardMonthlyJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="priceBoardMonthlyJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.price_board_monthly_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="售价看板每月历史数据处理任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!--三个月售价看板数据处理定时器 -->
+	<bean id="priceBoardQuarterlyJob" class="com.yhd.gps.schedule.job.PriceBoardQuarterlyJob">
+		<property name="quarterlyPriceBoardDataProcessor" ref="quarterlyPriceBoardDataProcessor"/>
+	</bean>
+	<bean id="priceBoardQuarterlyJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="priceBoardQuarterlyJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.price_board_monthly_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="售价看板三个月历史数据处理任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!--六个月售价看板数据处理定时器 -->
+	<bean id="priceBoardSemesterlyJob" class="com.yhd.gps.schedule.job.PriceBoardSemesterlyJob">
+		<property name="semesterlyPriceBoardDataProcessor" ref="semesterlyPriceBoardDataProcessor"/>
+	</bean>
+	<bean id="priceBoardSemesterlyJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="priceBoardSemesterlyJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.price_board_monthly_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="售价看板六个月历史数据处理任务"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- =============================以上为城市精选定时器 ===============================-->	
+	
+	<!-- 金币促销价变化发送消息Job -->
+	<bean id="goldCoinPriceChangeMsgSendJob" class="com.yhd.gps.schedule.job.GoldCoinPriceChangeMsgSendJob">
+	   <property name="goldCoinPriceChangeMsgSendProcessor" ref="goldCoinPriceChangeMsgSendProcessor"/>
+	</bean>
+	<bean id="goldCoinPriceChangeMsgSendJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="goldCoinPriceChangeMsgSendJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.gold_coin_price_changeMsg_send_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="金币促销变价发送消息"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="false"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- pm_price表数据清理Job -->
+	<bean id="pmPriceDataCleanJob" class="com.yhd.gps.schedule.job.PmPriceDataCleanJob">
+	   <property name="pmPriceDataCleanProcessor" ref="pmPriceDataCleanProcessor"/>
+	</bean>
+	<bean id="pmPriceDataCleanJobCronTrigger" class="com.yihaodian.architecture.kira.client.quartz.YHDCronTriggerBean">
+		<property name="jobDetail">
+			<bean class="com.yihaodian.architecture.kira.client.quartz.YHDMethodInvokingJobDetailFactoryBean">
+				<property name="targetObject" ref="pmPriceDataCleanJob"/>
+				<property name="targetMethod" value="execute"/>
+				<property name="concurrent" value="false"/>
+			</bean>
+		</property>
+		<property name="cronExpression" value="${quartz_cron.pm_price_data_clean_job}"/>
+		<property name="version" value="0.0.1"/>
+		<property name="description" value="pm_price表数据清理"/>
+		<property name="asynchronous" value="true"/>
+		<property name="onlyRunOnSingleProcess" value="true"/>
+		<property name="concurrent" value="false"/>
+		<property name="scheduledLocally" value="false"/>
+		<property name="disabled" value="true"/>
+	</bean>
+	
+	<!-- kira客户端配置 -->
+	<bean id="kiraClientConfig" class="com.yihaodian.architecture.kira.client.util.KiraClientConfig">
+		<property name="appCenter" value="false"/>
+		<property name="workWithoutKira" value="false"/>
+		<property name="waitForResourceTimeoutMillisecond" value="120000"/>
+		<property name="autoDeleteTriggersOnZK" value="true"/>
+		<property name="visibilityLimited" value="false"/>
+		<property name="visibleForUsers" value="lipengfei,lipengcheng,liling2"/>
+		<property name="sendAlarmEmail" value="true"/>
+		<property name="emailsToReceiveAlarm" value="IT_ShareService_Price@yhd.com"/>
+		<property name="sendAlarmSMS" value="true"/>
+		<property name="keepKiraClientConfigDataOnKiraServerUnchanged" value="FALSE"/>
+	</bean>
+
+	<!-- 指定机器执行定时器优先级：Trigger的locationsToRunJob > scheduler的locationsToRunJobForAllTriggersOfThisScheduler > kiraClientConfig的locationsToRunJobForAllTriggers -->
+	<bean id="GpsQuartzScheduler" class="com.yihaodian.architecture.kira.client.quartz.YHDSchedulerFactoryBean" lazy-init="false" autowire="no"
+		depends-on="kiraClientConfig">
+		<property name="triggers">
+			<list>
+				<ref local="gpsDataCleanJobCronTrigger"/>
+				<ref local="priceChangeTaskCleanJobDetailCronTrigger"/>
+				<ref local="gpsProductSyncJobCronTrigger"/>
+				<ref local="gpsPriceChangeMsgSendJobCronTrigger"/>
+				<ref local="promotionPriceChangeMsgSendJobCronTrigger"/>
+				<ref local="historyPriceChangeStatisticJobCronTrigger"/>
+				<ref local="promRuleSoldNumResetJobCronTrigger"/>
+				<ref local="compensateGpsPriceChangeMsgSendJobCronTrigger"/>
+				<ref local="compensateHistoryPriceDataJobCronTrigger"/>
+				<ref local="promotionCompareJobCronTrigger"/>
+				<ref local="jdBookSyncJobCronTrigger"/>
+				<ref local="jdDailyGoodsSyncJobCronTrigger"/>
+				<ref local="ruleExecuteJobCronTrigger"/>
+				<ref local="initBaseDataMsgSendJobCronTrigger"/>
+				<ref local="computeModePriceJobCronTrigger"/>
+				<ref local="cityPickPromotionJobCronTrigger"/>
+				<ref local="priceScheduleMsgSend4AIJobCronTrigger"/>
+				<ref local="sensitivePriceUpdateJobCronTrigger"/>
+				<ref local="handleAdvicedPriceJobCronTrigger"/>
+				<ref local="sendPriceScheduleCompletenessJobCronTrigger"/>
+				<ref local="goldCoinPriceChangeMsgSendJobCronTrigger"/>
+				<ref local="priceBoardDailyJobCronTrigger"/>
+				<ref local="priceBoardWeeklyJobCronTrigger"/>
+				<ref local="priceBoardMonthlyJobCronTrigger"/>
+				<ref local="priceBoardQuarterlyJobCronTrigger"/>
+				<ref local="priceBoardSemesterlyJobCronTrigger"/>
+				<ref local="pmPriceDataCleanJobCronTrigger"/>
+			</list>
+		</property>
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.threadPool.threadCount">1</prop>
+			</props>
+		</property>
+		<!-- <property name="locationsToRunJobForAllTriggersOfThisScheduler" value="10.161.164.38:8080"/> -->
+	</bean>
+
+</beans>

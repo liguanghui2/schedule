@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BusyMiscConfigVo">
+    <typeAlias type="com.yhd.gps.config.vo.BusyMiscConfigVo" alias="busyMiscConfigVo"/>
+       
+    <resultMap class="busyMiscConfigVo" id="busyMiscConfigVo">
+        <result property="id" column="id"/>
+        <result property="itemKey" column="item_key"/>
+        <result property="itemValue" column="item_value"/>
+        <result property="itemEnabled" column="enabled"/>
+    </resultMap>
+    
+    <!--mysql数据库-->
+    <select id="getBusyMiscConfigVoByKey" resultMap="busyMiscConfigVo" parameterClass="string">
+        select id, item_key, item_value, enabled from BS_MISC_CONFIG bc where bc.item_key = #key# and bc.is_deleted=0
+    </select>
+    
+    <update id="updateBusyMiscConfigVo" parameterClass="busyMiscConfigVo">
+        update BS_MISC_CONFIG set update_time = now(), item_key = #itemKey#, item_value = #itemValue#, enabled = #itemEnabled# where ID = #id#
+    </update>
+</sqlMap>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="BusyProductPromRuleLog">
+    <typeAlias type="com.yhd.gps.schedule.vo.BusyProductPromRuleLogVo" alias="busyProductPromRuleLogVo"/>
+    
+    <!--查询促销价格规则信息-->
+    <resultMap id="busyProductPromRuleLogVo" class="busyProductPromRuleLogVo">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="opType" column="op_type"/>
+        <result property="ruleId" column="rule_id"/>
+        <result property="pmId" column="pm_info_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="merchantId" column="merchant_id"/>
+        <result property="promoteType" column="is_promotion" nullValue="0"/>
+        <result property="promNonMemberPrice" column="product_prom_non_mem_price"/>
+        <result property="specialPriceLimitNumber" column="special_price_limit_number" nullValue="0"/>
+        <result property="userPriceLimitNumber" column="user_price_limit_number" nullValue="0"/>
+        <result property="soldNum" column="sold_num" nullValue="0"/>
+        <result property="payNum" column="pay_num" nullValue="0"/>
+        <result property="promStartTime" column="product_prom_start_date"/>
+        <result property="promEndTime" column="product_prom_end_date"/>
+        <result property="backendOperatorId" column="BACK_OPERATOR_ID"/>
+        <result property="visualSerialType" column="is_visual_serial" nullValue="0"/>
+        <result property="parentRuleId" column="parent_rule_id" nullValue="0"/>
+        <result property="ruleType" column="rule_type" nullValue="0"/>
+        <result property="mutexPromotion" column="mutex_promotion" nullValue="1"/>
+        <result property="discount" column="discount"/>
+        <result property="ruleCreateTime" column="update_time"/>
+        <result property="ruleUpdateTime" column="update_time"/>
+        <result property="clientPoolName" column="client_pool_name"/>
+        <result property="clientVersion" column="client_version"/>
+        <result property="clientIP" column="client_ip"/>
+        <result property="serverIP" column="server_ip"/>
+        <result property="status" column="status"/>
+        <result property="avgPrice" column="avg_price"/>
+        <result property="minCount" column="min_count"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="priceLockType" column="price_lock_type" nullValue="0"/>
+        <result property="priceChangeRemind" column="price_change_remind" nullValue="0"/>
+    </resultMap>
+    
+    <insert id="insertProductPromRuleLogVo" parameterClass="busyProductPromRuleLogVo">
+    	/* insertProductPromRuleLogVo */
+        <![CDATA[
+	      insert into BS_PRICE_RULE_CHANGE_LOG
+	      	(OP_TYPE, RULE_ID, PRODUCT_ID, IS_PROMOTION, SPECIAL_PRICE_LIMIT_NUMBER, PRODUCT_PROM_NON_MEM_PRICE,
+	      	 PRODUCT_PROM_START_DATE, PRODUCT_PROM_END_DATE, BACK_OPERATOR_ID, user_Price_Limit_Number, sold_num,
+	      	 MERCHANT_ID, PROM_NAME,IS_VISUAL_SERIAL, PARENT_RULE_ID, RULE_TYPE, MUTEX_PROMOTION, DISCOUNT, RULE_CREATE_TIME, RULE_UPDATE_TIME,
+	      	 client_pool_name, client_version, client_ip, server_ip, status, pm_info_id, avg_price, min_count, channel_id, PAY_NUM, PRICE_LOCK_TYPE,
+	      	 PRICE_CHANGE_REMIND, SHOPPING_BAG_SOLD_NUMBER)
+	      values
+	      	(#opType#, #ruleId#, #productId#, #promoteType#, #specialPriceLimitNumber#, #promNonMemberPrice#,
+	      	 #promStartTime#, #promEndTime#, #backendOperatorId#, #userPriceLimitNumber#, #soldNum#,
+	      	 #merchantId#, #promName#, #visualSerialType#, #parentRuleId#, #ruleType#, #mutexPromotion#, #discount#, #ruleCreateTime#, #ruleUpdateTime#,
+	    	 #clientPoolName#, #clientVersion#, #clientIP#, #serverIP#, #status#, #pmId#, #avgPrice#, #minCount#, #channelId#, #payNum#, #priceLockType#,
+	    	 #priceChangeRemind#, #shoppingBagSoldNum#)
+        ]]>
+    </insert>
+    
+</sqlMap>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="no" default-lazy-init="false">
+
+	<bean id="busyLogService" class="com.yhd.gps.busyservice.service.impl.BusyLogServiceImpl">
+		<property name="busyPriceJumperLogDao" ref="busyPriceJumperLogDao"/>
+		<property name="busyLogDao" ref="busyLogDao"/>
+	</bean>
+
+	<bean id="busyPromRuleCleanService" class="com.yhd.gps.busyservice.service.impl.BusyPromRuleCleanServiceImpl">
+		<property name="busyProductPromRuleDao" ref="busyProductPromRuleDao"/>
+		<property name="busyGpsPromotionDao" ref="busyGpsPromotionDao"/>
+		<property name="busyLogService" ref="busyLogService"/>
+	</bean>
+
+	<bean id="busyGpsProductSyncService" class="com.yhd.gps.busyservice.service.impl.BusyGpsProductSyncServiceImpl">
+		<property name="busyGpsProductDao" ref="busyGpsProductDao"/>
+		<property name="busyProductDao" ref="busyProductDao"/>
+		<property name="syncDataLogDao" ref="syncDataLogDao"/>
+	</bean>
+
+	<bean id="dateSectionPriceInfoHandler" class="com.yhd.gps.schedule.historyprice.DateSectionPriceInfoHandler" parent="msgSender">
+		<property name="historyPriceChangeMsgDao" ref="historyPriceChangeMsgDao"/>
+		<property name="dateSectionPriceHistoryDao" ref="dateSectionPriceHistoryDao"/>
+	</bean>
+
+	<!-- 抽象的消息发送器 -->
+	<bean id="msgSender" class="com.yhd.gps.busyservice.msg.MsgSender" abstract="true">
+		<property name="busyLogService" ref="busyLogService"/>
+		<property name="historyPriceChangeMsgDao" ref="historyPriceChangeMsgDao"/>
+	</bean>
+
+	<!-- PM_PRICE及PROD_PROM_RULE变更导致的价格变动消息发送器 -->
+	<bean id="gpsPriceChangeMsgSender" class="com.yhd.gps.busyservice.msg.GPSPriceChangeMsgSender" parent="msgSender">
+		<property name="busyPmInfoDao" ref="busyPmInfoDao"/>
+	</bean>
+	
+	<!-- 补偿价格变动消息到历史价格变动表发送器 -->
+	<bean id="compensateGpsPriceChangeMsgSender" class="com.yhd.gps.busyservice.msg.CompensateGPSPriceChangeMsgSender" parent="msgSender">
+		<property name="busyPmInfoDao" ref="busyPmInfoDao"/>
+	</bean>
+
+	<!-- LandingPage促销导致的价格变动消息发送器 -->
+	<bean id="promotionPriceChangeMsgSender" class="com.yhd.gps.busyservice.msg.PromotionPriceChangeMsgSender" parent="msgSender">
+		<property name="busyGpsPromotionDao" ref="busyGpsPromotionDao"/>
+	</bean>
+	
+	<!-- 价格促销重置已售数量 -->
+	<bean id="promRuleSoldNumResetService" class="com.yhd.gps.busyservice.service.impl.PromRuleSlodNumResetServiceImpl">
+		<property name="dataProcessScannerDao" ref="dataProcessScannerDao"/>
+		<property name="busyProductPromRuleDao" ref="busyProductPromRuleDao"/>
+	</bean>
+	
+	<!-- 扫描表管理 -->
+	<bean id="dataProcessScannerService" class="com.yhd.gps.busyservice.service.impl.DataProcessScannerServiceImpl">
+		<property name="dataProcessScannerDao" ref="dataProcessScannerDao"/>
+		<property name="busyProductPromRuleDao" ref="busyProductPromRuleDao"/>
+		<property name="busyPmInfoDao" ref="busyPmInfoDao"/>
+		<property name="busyMerchantDao" ref="busyMerchantDao"/>
+		<property name="promRuleSoldNumResetService" ref="promRuleSoldNumResetService"/>
+	</bean>
+	
+	<bean id="shardingIndexService" class="com.yhd.gps.schedule.service.impl.ShardingIndexServiceImpl">
+		<property name="shardingIndexDao" ref="shardingIndexDao"/>
+		<property name="busyMiscConfigDao" ref="busyMiscConfigDao"/>
+	</bean>
+	
+	<!-- LandingPage促销查询-->
+	<bean id="busyProductPromotionService" class="com.yhd.gps.busyservice.service.impl.BusyProductPromotionServiceImpl">
+		<property name="busyProductPromotionDao" ref="busyProductPromotionDao"/>
+		<property name="busyGpsPromotionDao" ref="busyGpsPromotionDao"/>
+	</bean>
+	
+	<!-- 京东图书入驻1号店商品id查询 -->
+	<bean id="jdBookSyncService" class="com.yhd.gps.busyservice.service.impl.JDBookSyncServiceImpl">
+		<property name="busyPmInfoDao" ref="busyPmInfoDao"/>
+		<property name="jdBookSyncLogDao" ref="jdBookSyncLogDao"/>
+	</bean>
+		
+	<!-- 初始化离线数据商品id查询 -->
+	<bean id="offlineDataService" class="com.yhd.gps.busyservice.service.impl.OfflineDataServiceImpl">
+		<property name="pmPriceDao" ref="pmPriceDao"></property>
+	</bean>
+	
+	<!-- 城市精选建议价计算 -->
+	<bean id="advicePriceService" class="com.yhd.gps.busyservice.service.impl.AdvicePriceServiceImpl" depends-on="backendPriceHedwigBeanFactory">
+		<property name="sixthDaysPriceService" ref="sixthDaysPriceRemoteService"/>
+		<property name="cityPickPriceService" ref="cityPickPriceService"/>
+	</bean>
+
+	<!-- 城市精选价格服务,主要用于价格导出-->
+	<bean id="cityPickPriceService" class="com.yhd.gps.busyservice.service.impl.CityPickPriceServiceImpl" depends-on="backendPriceHedwigBeanFactory">
+
+	</bean>
+	
+	<!-- 发送金币促销变价消息 -->
+	<bean id="goldCoinPriceChangeMsgSender" class="com.yhd.gps.busyservice.msg.GoldCoinPriceChangeMsgSender">
+		<property name="goldCoinPriceChangeHistoryService" ref="goldCoinPriceChangeHistoryService"></property>
+	</bean>
+	
+	<!-- 金币商城 操作金币促销历史价格-->
+	<bean id="goldCoinPriceChangeHistoryService" class="com.yhd.gps.schedule.service.impl.GoldCoinPriceChangeHistoryServiceImpl">
+		<property name="goldCoinPriceChangeHistoryDao" ref="goldCoinPriceChangeHistoryDao"/>
+	</bean>
+	
+	<!-- 定时器中调用PSS接口相关服务 -->
+	<bean id="productRemoteService" class="com.yhd.gps.schedule.remoteService.impl.ProductInfoRemoteServiceImpl"/>
+	
+	<bean id="priceBoardDataRecordService" class="com.yhd.gps.schedule.service.impl.PriceBoardDataRecordServiceImpl">
+		<property name="priceBoardDataRecordDao" ref="priceBoardDataRecordDao"/>
+	</bean>
+
+</beans>

@@ -1,0 +1,167 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/!svn/ver/1829427/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo
+END
+BusyPmInfoVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/!svn/ver/1657668/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/BusyPmInfoVo.java
+END
+ProductPromRule4ResetSoldNumVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/!svn/ver/1657668/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/ProductPromRule4ResetSoldNumVo.java
+END
+PmPriceVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/!svn/ver/1793111/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/PmPriceVo.java
+END
+BusyPmPriceLogVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/!svn/ver/1614513/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/BusyPmPriceLogVo.java
+END
+DateSectionPricePersistTuple.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/DateSectionPricePersistTuple.java
+END
+JumperMessageLog.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/JumperMessageLog.java
+END
+JDBookSyncLogVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/!svn/ver/1738003/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/JDBookSyncLogVo.java
+END
+SyncDataLogVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/SyncDataLogVo.java
+END
+StatisticsDateSection.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/StatisticsDateSection.java
+END
+PromotionPeriodTimeVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/!svn/ver/1664760/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/PromotionPeriodTimeVo.java
+END
+BusyProductPromRuleLogVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/BusyProductPromRuleLogVo.java
+END
+BaseLogVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/BaseLogVo.java
+END
+JDBookMessageVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/!svn/ver/1738003/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/JDBookMessageVo.java
+END
+MailTempletVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/!svn/ver/1676262/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/MailTempletVo.java
+END
+PriceBoardMonthlyDataVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/!svn/ver/1829427/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/PriceBoardMonthlyDataVo.java
+END
+BusyLandingProductVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/!svn/ver/1664760/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/BusyLandingProductVo.java
+END
+HistoryGoldCoinPriceChangeMsgVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/!svn/ver/1825910/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/HistoryGoldCoinPriceChangeMsgVo.java
+END
+LPCompareResultVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/!svn/ver/1664760/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/LPCompareResultVo.java
+END
+DataProcessScannerVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/!svn/ver/1657668/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/DataProcessScannerVo.java
+END
+DateIntervalVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/!svn/ver/1829427/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/DateIntervalVo.java
+END
+GpsScheduleWarningRuleVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/!svn/ver/1772317/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/GpsScheduleWarningRuleVo.java
+END
+DistintcPriceChangCache.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/!svn/ver/1610300/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/DistintcPriceChangCache.java
+END
+StatisticsPriceInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/!svn/ver/1642133/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/StatisticsPriceInfo.java
+END
+PriceBoardWeeklyDataVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/!svn/ver/1829427/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/PriceBoardWeeklyDataVo.java
+END
+ShardingIndexVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/!svn/ver/1657668/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/ShardingIndexVo.java
+END
+PriceBoardDailyDataVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/!svn/ver/1829427/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/PriceBoardDailyDataVo.java
+END
+GoldCoinPriceChangeMsg.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/!svn/ver/1825411/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule/vo/GoldCoinPriceChangeMsg.java
+END

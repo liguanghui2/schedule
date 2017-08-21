@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="HistoryPriceChangeMsg">
+
+	<resultMap id="SimpleHistoryPriceChangeMsgVoMap" class="com.yihaodian.busy.vo.SimpleHistoryPriceChangeMsgVo">
+		<result column="id" property="id"/>
+		<result column="product_id" property="productId"/>
+		<result column="pm_info_id" property="pmInfoId"/>
+		<result column="merchant_id" property="merchantId"/>
+		<result column="channel_id" property="channelId"/>
+		<result column="price" property="price"/>
+		<result column="promotion_id" property="promotionId"/>
+		<result column="rule_type" property="ruleType"/>
+		<result column="create_time" property="createTime"/>
+		<result column="is_deal" property="isDeal"/>
+	</resultMap>
+
+	<sql id="HistoryPriceChangeMsgFullFields">
+		id, product_id, pm_info_id, merchant_id, channel_id, price_id, price, promotion_id, prom_name, prom_type, rule_type,
+		start_time, end_time, create_time, promotion_update_time, operator_id, price_change_msg_type, is_deal, sharding_index
+	</sql>
+	
+	<!-- 新插入history_price_change_msg -->
+	<insert id="bs_insertHistoryPriceChangeMsg">
+		/* bs_insertHistoryPriceChangeMsg */
+		insert into HISTORY_PRICE_CHANGE_MSG
+		(id, product_id, pm_info_id, merchant_id, channel_id, price_id, price, promotion_id, start_time, end_time, create_time,
+		 promotion_update_time, prom_name, prom_type, operator_id, rule_type, price_change_msg_type, is_deal, sharding_index, province_id, city_id, county_id)
+		values
+		(#id#, #productId#, #pmInfoId#, #merchantId#, #channelId#, #priceId#, #price#, #promotionId#, #startTime#, #endTime#, #createTime#,
+		 #updateTime#, #promName#, #promType#, #operatorId#, #ruleType#, #priceChangeMsgType#, #isDeal#, #shardingIndex#, #provinceId#, #cityId#, #countyId#)  
+	</insert>
+
+	<!-- 查询未处理的历史价格消息的pmId(基准价和促销,不包含LP) -->
+	<select id="queryUnDealPmIdsBySharding" resultClass="Long">
+		/* queryUnDealPmIdsBySharding */
+		select distinct pm_info_id from history_price_change_msg
+		where is_deal = 0 and price_change_msg_type = 1 and sharding_index = #shardingIndex#
+		and create_time &gt;= #startDate# and create_time &lt; #endDate# limit 0,1000
+	</select>
+
+	<!-- 查询最近几个月的历史数据(基准价和促销,不包含LP) -->
+	<select id="queryRecentHistoryPriceChangeMsgs" resultMap="SimpleHistoryPriceChangeMsgVoMap">
+		/* queryRecentHistoryPriceChangeMsgs */
+		select id, product_id, pm_info_id, merchant_id, channel_id, price, promotion_id, rule_type, create_time, is_deal 
+		from history_price_change_msg
+		where pm_info_id in
+		<iterate conjunction="," open="(" close=")" property="pmInfoIds">
+			#pmInfoIds[]#
+		</iterate> 
+		and create_time &gt;= #startDate# and create_time &lt;= #endDate# and price_change_msg_type = 1
+	</select>
+	
+	<!-- 查询一段时间内商品最低价-->
+	<select id="queryMinHistoryPriceChangeMsgs" resultMap="SimpleHistoryPriceChangeMsgVoMap">
+		/* queryMinHistoryPriceChangeMsgs */
+		select id, product_id, pm_info_id, merchant_id, channel_id, MIN(price) as price, promotion_id, rule_type, create_time, is_deal 
+		from history_price_change_msg
+		where pm_info_id in
+		<iterate conjunction="," open="(" close=")" property="pmInfoIds">
+			#pmInfoIds[]#
+		</iterate> 
+		and create_time &gt;= #startDate# and create_time &lt;= #endDate# and price_change_msg_type = 1 group by pm_info_id,channel_id
+	</select>
+
+	<!-- 更新处理状态为已处理 -->
+	<update id="batchUpdateHistoryPriceChangeMsg2Dealed">
+		/* batchUpdateHistoryPriceChangeMsg2Dealed */
+		update history_price_change_msg set is_deal = 1
+		where id in
+		<iterate conjunction="," open="(" close=")">
+			#[]#
+		</iterate>
+	</update>
+	
+	<delete id="deleteHistoryPriceChangeMsgByPmIds">
+		delete from history_price_change_msg
+		where pm_info_id in
+		<iterate conjunction="," open="(" close=")">
+			#[]#
+		</iterate> 
+	</delete>
+
+</sqlMap>

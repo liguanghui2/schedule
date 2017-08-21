@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ShardingIndex">
+	<typeAlias type="com.yhd.gps.schedule.vo.ShardingIndexVo"
+		alias="shardingIndexVo" />
+
+	<resultMap id="ShardingIndexVoMap" class="com.yhd.gps.schedule.vo.ShardingIndexVo">
+		<result column="id" property="id" />
+		<result column="table_name" property="tableName" />
+		<result column="sharding_index" property="shardingIndex" />
+		<result column="is_valid" property="isValid" />
+		<result column="ip" property="ip" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<!-- 查询所有的切片 -->
+	<select id="queryAllShardingByTableName" parameterClass="Map"
+		resultMap="ShardingIndexVoMap">
+		/* queryAllShardingByTableName */
+		select id, table_name,
+		sharding_index, is_valid, ip, update_time
+		from sharding_index
+		where table_name = #tableName#
+	</select>
+
+	<!-- 查询宕机的机器释放的所有切片 -->
+	<select id="queryAllCrashShardingByTableName">
+		/* queryAllCrashShardingByTableName */
+		select id,
+		table_name, sharding_index, is_valid, ip, update_time
+		from sharding_index
+		where table_name = #tableName# and is_valid = 1 and is_crash = 1
+	</select>
+
+	<!-- 根据tableName查询未宕机的机器数量 -->
+	<select id="queryCrashNumByTableName" parameterClass="Map"
+		resultClass="int">
+		/* queryNoCrashNumByTableName */
+		select count(0) from
+		sharding_index where table_name = #tableName# and is_crash = 1
+	</select>
+
+	<!-- 更新分片状态为占用 -->
+	<update id="updateShardingUnValid" parameterClass="Map">
+		/*
+		updateShardingUnValid */
+		update sharding_index set is_valid = 0, ip =
+		#ip#, update_time = now() where is_valid = 1 and id = #id#
+	</update>
+
+	<!-- 更新宕机的机器释放的可用切片为占用状态 -->
+	<update id="updateCrashShardingUnValid" parameterClass="Map">
+		/*
+		updateCrashShardingUnValid */
+		update sharding_index set is_valid = 0,
+		is_crash = 0, ip = #ip#, update_time = now() where is_valid = 1 and
+		is_crash = 1 and id = #id#
+	</update>
+
+	<!-- 更新切片为可用状态 -->
+	<update id="updateShardingValid" parameterClass="Map">
+		/*
+		updateShardingValid */
+		update sharding_index set is_valid = 1, ip = '',
+		update_time = now() where is_valid = 0 and id = #id#
+	</update>
+
+	<!-- 使用可用IP列表更新不可用的IP占用的切片状态 -->
+	<update id="updateShardingValidByActiveIps" parameterClass="Map">
+		/* updateShardingValidByActiveIps */
+		update sharding_index set is_valid
+		= 1, update_time = now(), ip = '', is_crash = 1
+		where is_valid = 0
+		and ip not in
+		<iterate conjunction="," property="activeIps" open="(" close=")">
+			#activeIps[]#
+		 	</iterate>
+	</update>
+
+	<!-- 查询所有的切片 -->
+	<select id="queryAllSharding" parameterClass="Map"
+		resultMap="ShardingIndexVoMap">
+		/* queryAllSharding */
+		select id, table_name, sharding_index,
+		is_valid, ip, update_time
+		from sharding_index
+	</select>
+
+	<!-- 根据id查询切片 -->
+	<select id="queryShardingById" parameterClass="Map"
+		resultMap="ShardingIndexVoMap">
+		/* queryAllSharding */
+		select id, table_name, sharding_index,
+		is_valid, ip, update_time
+		from sharding_index
+		where id = #id#
+	</select>
+
+	<!--插入一条切片信息 -->
+	<insert id="insertSharding" parameterClass="shardingIndexVo">
+		<selectKey keyProperty="id" resultClass="long" type="post">
+			select last_insert_id() as ID
+    	</selectKey>
+		insert into sharding_index
+		(id, table_name, sharding_index, is_valid,
+		ip, update_time)
+		values
+		(#id#, #tableName#, #shardingIndex#, #isValid#,
+		#ip#, now())
+	</insert>
+
+	<!--根据id更新切片为可用状态 -->
+	<update id="batchUpdateShardingValidById" parameterClass="Map">
+		update sharding_index
+		set is_valid = 1, ip = '', update_time = now()
+		where id in
+		<iterate conjunction="," property="ids" open="(" close=")">
+			#ids[]#
+		</iterate>
+	</update>
+
+	<!-- 删除 一条切片信息 -->
+	<delete id="deleteShardingById" parameterClass="map">
+		delete from
+		sharding_index
+		where id = #id#
+	</delete>
+
+</sqlMap>

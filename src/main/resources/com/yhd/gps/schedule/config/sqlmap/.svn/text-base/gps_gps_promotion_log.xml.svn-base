@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GPSPromotion">
+	<typeAlias type="com.yhd.gps.promotion.vo.GPSPromotionLogVo" alias="GPSPromotionLogVo" />
+
+	<resultMap class="GPSPromotionLogVo" id="GPSPromotionLogVoMap">
+		<result column="id" property="id"/>
+		<result column="create_time" property="createTime"/>
+        <result column="op_type" property="opType"/>
+        <result column="client_pool_name" property="clientPoolName"/>
+        <result column="client_version" property="clientVersion"/>
+        <result column="client_ip" property="clientIP"/>
+        <result column="server_ip" property="serverIP"/>
+        <result column="memo" property="memo"/>
+        <result column="gps_promotion_id" property="gpsPromotionId" />
+		<result column="promotion_id" property="promotionId" />
+		<result column="product_id" property="productId" />
+		<result column="merchant_id" property="merchantId" />
+		<result column="pm_info_id" property="pmId" />
+		<result column="pgm_info_id" property="pgmId" />
+		<result column="promotion_price" property="promotionPrice" />
+		<result column="promotion_point" property="promotionPoint" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="promotion_type" property="promotionType" />
+		<result column="limit_stock" property="limitStock" />
+		<result column="limit_type" property="limitType" />
+		<result column="sold_num" property="soldNum" />
+		<result column="sold_date" property="soldDate" />
+		<result column="status" property="status" />
+		<result column="prom_create_time" property="promCreateTime" />
+		<result column="prom_update_time" property="promUpdateTime" />
+		<result column="operator_id" property="operatorId" />
+		<result column="operate_reason" property="operateReason" />
+	</resultMap>
+	
+	<!-- 新插入insertGpsPromotionLog -->
+	<insert id="bs_insertGpsPromotionLog">
+		/* bs_insertGpsPromotionLog */
+		<selectKey keyProperty="id" resultClass="long" type="post">
+          select last_insert_id() as ID
+    	</selectKey>  
+		insert into gps_promotion_change_log(id,op_type,client_pool_name,client_version,client_ip,server_ip,memo,gps_promotion_id,promotion_id,product_id,merchant_id,pm_info_id,pgm_info_id,promotion_price,promotion_point,start_time,end_time,promotion_type,limit_type,limit_stock,sold_num,sold_date,status,prom_create_time,prom_update_time,operator_id,operate_reason)
+		values(#id#,#opType#,#clientPoolName#,#clientVersion#,#clientIP#,#serverIP#,#memo#,#gpsPromotionId#,#promotionId#,#productId#,#merchantId#,#pmId#,#pgmId#,#promotionPrice#,#promotionPoint#,#startTime#,#endTime#,#promotionType#,#limitType#,#limitStock#,#soldNum#,#soldDate#,#status#,#promCreateTime#,#promUpdateTime#,#operatorId#,#operateReason#)  
+	</insert>
+
+</sqlMap>

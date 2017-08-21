@@ -1,0 +1,43 @@
+10
+
+dir
+1840979
+http://svn.yihaodian.com/svn/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/test/resources/data/service
+http://svn.yihaodian.com/svn
+
+
+
+2016-08-12T05:30:16.199534Z
+1664760
+lipengcheng
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+20949288-e9a4-11dc-a949-94f3047059e9
+
+DateSectionPriceInfoServiceTest
+dir
+
+HistoryPriceChangeMsgServiceTest
+dir
+
+DataProcessScannerServiceTest
+dir
+
+ProductPromotionServiceTest
+dir
+
+PromRuleSoldNumResetServiceTest
+dir
+

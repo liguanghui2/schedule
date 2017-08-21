@@ -1,0 +1,76 @@
+10
+
+dir
+1840979
+http://svn.yihaodian.com/svn/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/schedule
+http://svn.yihaodian.com/svn
+
+
+
+2017-07-13T06:55:06.951181Z
+1832906
+liling2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+20949288-e9a4-11dc-a949-94f3047059e9
+
+vo
+dir
+
+historyprice
+dir
+
+enums
+dir
+
+common
+dir
+
+consumer
+dir
+
+jd
+dir
+
+exception
+dir
+
+sharding
+dir
+
+service
+dir
+
+dao
+dir
+
+database
+dir
+
+job
+dir
+
+parall
+dir
+
+remoteService
+dir
+
+action
+dir
+
+command
+dir
+

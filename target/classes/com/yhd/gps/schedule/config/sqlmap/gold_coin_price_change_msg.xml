@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GPSPromotionPriceChangeMsg">
+
+	<resultMap id="promotionPriceChangeMsg" class="com.yhd.gps.schedule.vo.GoldCoinPriceChangeMsg">
+		<result property="id" column="ID"/>
+		<result property="pmInfoId" column="PM_INFO_ID"/>
+		<result property="ruleId" column="RULE_ID"/>
+		<result property="msgContent" column="MSG_CONTENT"/>
+		<result property="msgStatus" column="MSG_STATUS"/>
+		<result property="msgTaskIp" column="MSG_TASK_IP"/>
+		<result property="msgTaskTime" column="MSG_TASK_TIME"/>
+		<result property="actualSendIp" column="ACTUAL_SEND_IP"/>
+		<result property="actualSendTime" column="ACTUAL_SEND_TIME"/>
+		<result property="createIp" column="CREATE_IP"/>
+		<result property="createTime" column="CREATE_TIME"/>
+		<result property="updatecreateIp" column="UPDATECREATE_IP"/>
+		<result property="updateTime" column="UPDATE_TIME"/>
+	</resultMap>
+	
+	<select id="getUnSendGoldCoinPriceChangeMsg" parameterClass="Map" resultMap="promotionPriceChangeMsg">
+		/* getUnSendGoldCoinPriceChangeMsg */
+		SELECT ID,
+			PM_INFO_ID,
+			RULE_ID,
+			MSG_CONTENT,
+			MSG_STATUS,
+			MSG_TASK_IP,
+			MSG_TASK_TIME,
+			ACTUAL_SEND_IP,
+			ACTUAL_SEND_TIME,
+			CREATE_IP,
+			CREATE_TIME,
+			UPDATECREATE_IP,
+			UPDATE_TIME
+		FROM gold_coin_price_change_msg
+		WHERE MSG_TASK_TIME &lt;= now()
+		AND SHARDING_INDEX = #shardingIndex# AND MSG_STATUS = 0
+		and pm_info_id IS NOT NULL
+		order by msg_task_time
+		LIMIT #pageSize#
+	</select>
+	
+   <update id="batchUpdateGoldCoinPriceChangeMsgStatus2Send">
+		/* batchUpdateGoldCoinPriceChangeMsgStatus2Send */
+		UPDATE gold_coin_price_change_msg SET 
+			update_time = now(), 
+			msg_status = 1, 
+			actual_send_ip = #currentIp#,
+			updatecreate_ip = #currentIp#,
+			actual_send_time = now()
+		WHERE msg_status = 0 
+		and msg_task_time &lt; now()
+		and id in
+		<iterate conjunction="," open="(" close=")" property="ids">
+			#ids[]#
+		</iterate>
+    </update>
+</sqlMap>

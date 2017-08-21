@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+    <bean id="dataSource_product_master_test" class="org.unitils.database.UnitilsDataSourceFactoryBean">
+        <property name="databaseName" value="public"/>
+    </bean>
+    
+    <bean id="dataSource_mysql_gps_test" class="org.unitils.database.UnitilsDataSourceFactoryBean">
+        <property name="databaseName" value="public"/>
+    </bean>
+    
+    <bean id="dataSource_mysql_gps_log_test" class="org.unitils.database.UnitilsDataSourceFactoryBean">
+        <property name="databaseName" value="public"/>
+    </bean>
+    
+	<alias name="dataSource_product_master_test" alias="product_dataSource_test"/>
+	<alias name="dataSource_mysql_gps_test" alias="mysql_gps_schedule_dataSource_test"/>
+	<alias name="dataSource_mysql_gps_log_test" alias="busy_mysql_gps_log_dataSource_test"/>
+</beans>

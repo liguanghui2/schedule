@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="GpsScheduleWarningRuleVo">
+	<typeAlias type="com.yhd.gps.schedule.vo.GpsScheduleWarningRuleVo" alias="gpsScheduleWarningRuleVo"/>
+    
+    <resultMap class="gpsScheduleWarningRuleVo" id="gpsScheduleWarningRuleVo">
+        <result property="id" column="ID"/>
+        <result property="schema1" column="schema1"/>
+        <result property="sql1" column="sql1"/>
+        <result property="schema2" column="schema2"/>
+        <result property="sql2" column="sql2"/>
+        <result property="threshold" column="threshold" nullValue="0"/>
+        <result property="ruleType" column="rule_type"/>
+        <result property="isValid" column="is_valid"/>
+        <result property="shardingIndex" column="sharding_index"/>
+        <result property="email" column="email"/>
+        <result property="warningContent" column="warning_content"/>        
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="opType" column="op_type"/>
+    </resultMap>
+	
+	<sql id="gpsScheduleWarningRuleVoField">
+		select id, schema1, sql1, schema2, sql2, threshold, rule_type, is_valid, sharding_index, email, warning_content, remark, create_time, update_time, op_type
+		  from gps_schedule_warning_rule
+	</sql>
+	
+	<!-- 根据id查询定时器报警规则表 -->
+	<select id="getGpsScheduleWarningRuleVo" parameterClass="map" resultMap="gpsScheduleWarningRuleVo">
+		/* getGpsScheduleWarningRuleVo */
+		<include refid="gpsScheduleWarningRuleVoField"/>
+		 where id in
+		<iterate property="ids" open="(" close=")" conjunction=",">  
+		 	  #ids[]#
+        </iterate> 
+           and sharding_index =#shardingIndex# 
+           and is_valid = 1
+	</select>
+	
+	<!-- 查询全部规则 -->
+	<select id="getAllGpsScheduleWarningRuleVoList" resultMap="gpsScheduleWarningRuleVo">
+		/* getAllGpsScheduleWarningRuleVoList */
+        <include refid="gpsScheduleWarningRuleVoField"/>
+    </select> 
+	
+	<!-- 根据id查询定时器报警规则表 -->
+	<select id="getGpsScheduleWarningRuleVoById" parameterClass="map" resultMap="gpsScheduleWarningRuleVo">
+		/* getGpsScheduleWarningRuleVoById */
+		<include refid="gpsScheduleWarningRuleVoField"/>
+		 where id = #id#
+	</select>
+	
+	<!--更新定时器报警规则表 -->
+	<update id="updateGpsScheduleWarningRuleVo" parameterClass="gpsScheduleWarningRuleVo">
+		/* updateGpsScheduleWarningRuleVo */
+		update gps_schedule_warning_rule 
+		   set update_time = now()
+		   <isNotEmpty property="schema1">
+            	,schema1 = #schema1#
+           </isNotEmpty>
+		   <isNotEmpty property="sql1">
+            	,sql1 = #sql1#
+           </isNotEmpty>
+		   <isNotEmpty property="schema2">
+            	,schema2 = #schema2#
+           </isNotEmpty>
+		   <isNotEmpty property="sql2">
+            	,sql2 = #sql2#
+           </isNotEmpty>
+		   <isNotEmpty property="threshold">
+            	,threshold = #threshold#
+           </isNotEmpty>
+		   <isNotEmpty property="ruleType">
+            	,rule_type = #ruleType#
+           </isNotEmpty>
+		   <isNotEmpty property="isValid">
+            	,is_valid = #isValid#
+           </isNotEmpty>
+		   <isNotEmpty property="email">
+            	,email = #email#
+           </isNotEmpty>
+		   <isNotEmpty property="warningContent">
+            	,warning_content = #warningContent#
+           </isNotEmpty>
+		   <isNotEmpty property="remark">
+            	,remark = #remark#
+           </isNotEmpty>
+           <isNotEmpty property="opType">
+            	,op_type = #opType#
+           </isNotEmpty>
+		 where id = #id#
+	</update>
+	
+	<!-- 物理删除gps_schedule_warning_rule -->
+	<delete id="deleteGpsScheduleWarningRuleVoById" parameterClass="map">
+		/* deleteGpsScheduleWarningRuleVoById */
+		delete from gps_schedule_warning_rule
+		where id = #id#
+	</delete>
+
+	<!-- 新增规则 -->
+	<insert id="insertGpsScheduleWarningRuleVo" parameterClass="gpsScheduleWarningRuleVo">
+    	insert into gps_schedule_warning_rule 
+    		(schema1, sql1, schema2, sql2, threshold, rule_type, is_valid, sharding_index, email, warning_content, remark, create_time, update_time, op_type)
+        values
+        	(#schema1#, #sql1#, #schema2#, #sql2#, #threshold#, #ruleType#, #isValid#,#shardingIndex#,#email#,#warningContent#,
+        	#remark#, now(), now(), #opType#)
+		<selectKey resultClass="long" keyProperty="id" type="post">
+            <![CDATA[SELECT LAST_INSERT_ID() AS ID ]]>
+        </selectKey>
+    </insert>
+	
+	<!-- 取传入的sql执行结果 -->
+    <select id="getRuleExecuteResult" parameterClass="string"  remapResults ="true" resultClass="int">
+        <![CDATA[ $sql$ ]]>
+    </select>
+    
+    <!-- 取传入的sql执行结果,用于报警 -->
+    <select id="getRuleExecuteResult4Warning" parameterClass="string"  remapResults ="true" resultClass="java.util.HashMap">
+        <![CDATA[ $sql$ ]]>
+    </select>
+</sqlMap>

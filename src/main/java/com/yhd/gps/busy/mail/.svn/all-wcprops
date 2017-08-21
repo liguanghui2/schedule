@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/!svn/ver/1771658/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busy/mail
+END
+BusyMailFlowControlImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/!svn/ver/1665059/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busy/mail/BusyMailFlowControlImpl.java
+END
+BusyMailUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/!svn/ver/1771658/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busy/mail/BusyMailUtil.java
+END
+BusyMailSendWithTempletUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/!svn/ver/1771115/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busy/mail/BusyMailSendWithTempletUtil.java
+END
+BusyMailService.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/!svn/ver/1664760/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busy/mail/BusyMailService.java
+END
+BusyMailServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/!svn/ver/1771658/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busy/mail/BusyMailServiceImpl.java
+END
+BusyMailFlowControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/!svn/ver/1664760/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busy/mail/BusyMailFlowControl.java
+END

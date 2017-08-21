@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="no" default-lazy-init="false">
+
+	<bean id="gps_schedule_sqlMapClientTest" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:com/yhd/gps/schedule/config/sqlmap/sqlMapConfig.xml</value>
+		</property>
+		<property name="dataSource" ref="product_dataSource_test"/>
+	</bean>
+
+	<!-- prod -->
+	<bean id="busyPmInfoDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyPmInfoDaoImpl">
+		<property name="dataSource" ref="product_dataSource_test"/>
+	</bean>
+	<bean id="busyProductDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyProductDaoImpl">
+		<property name="dataSource" ref="product_dataSource_test"/>
+	</bean>
+	<bean id="busyMerchantDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyMerchantDaoImpl">
+		<property name="dataSource" ref="product_dataSource_test"/>
+	</bean>
+	<bean id="busyProductPromotionDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyProductPromotionDaoImpl">
+		<property name="dataSource" ref="product_dataSource_test"/>
+	</bean>
+
+	<!-- gps -->
+	<bean id="historyPriceChangeMsgDaoTest" class="com.yhd.gps.busyservice.dao.impl.HistoryPriceChangeMsgDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="busyGpsProductDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyGpsProductDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="busyGpsPromotionDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyGpsPromotionDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="busyMiscConfigDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyMiscConfigDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="busyPriceChangeMsgDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyPriceChangeMsgDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="busyProductPromRuleDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyProductPromRuleDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="dateSectionPriceHistoryDaoTest" class="com.yhd.gps.busyservice.dao.impl.DateSectionPriceHistoryDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="promotionPriceChangeMsgDaoTest" class="com.yhd.gps.busyservice.dao.impl.PromotionPriceChangeMsgDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="syncDataLogDaoTest" class="com.yhd.gps.busyservice.dao.impl.SyncDataLogDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="dataProcessScannerDaoTest" class="com.yhd.gps.schedule.dao.impl.DataProcessScannerDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="jdBookSyncLogDaoTest" class="com.yhd.gps.busyservice.dao.impl.JDBookSyncLogDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="pmAreaPriceDaoTest" class="com.yhd.gps.busyservice.dao.impl.PmAreaPriceDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="gpsRuleExecuteDaoTest" class="com.yhd.gps.busyservice.dao.impl.GpsRuleExecuteDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="gpsScheduleWarningRuleDaoTest" class="com.yhd.gps.busyservice.dao.impl.GpsScheduleWarningRuleDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+	<bean id="pmPriceDaoTest" class="com.yhd.gps.busyservice.dao.impl.PmPriceDaoImpl">
+		<property name="dataSource" ref="mysql_gps_schedule_dataSource_test"/>
+	</bean>
+
+	<!-- gps_log -->
+	<bean id="busyLogDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyLogDaoImpl">
+		<property name="dataSource" ref="dataSource_mysql_gps_log_test"/>
+	</bean>
+	<bean id="busyPriceJumperLogDaoTest" class="com.yhd.gps.busyservice.dao.impl.BusyPriceJumperLogDaoImpl">
+		<property name="dataSource" ref="dataSource_mysql_gps_log_test"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/!svn/ver/1831238/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busyservice/msg
+END
+GoldCoinPriceChangeMsgSender.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/!svn/ver/1831238/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busyservice/msg/GoldCoinPriceChangeMsgSender.java
+END
+MsgSender.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/!svn/ver/1638151/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busyservice/msg/MsgSender.java
+END
+PromotionPriceChangeMsgSender.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/!svn/ver/1638151/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busyservice/msg/PromotionPriceChangeMsgSender.java
+END
+CompensateGPSPriceChangeMsgSender.java
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svn/!svn/ver/1664792/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busyservice/msg/CompensateGPSPriceChangeMsgSender.java
+END
+GPSPriceChangeMsgSender.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/!svn/ver/1760183/source/yihaodian/ARCH/ARCH-1/gps-schedule/trunk/gps-schedule/src/main/java/com/yhd/gps/busyservice/msg/GPSPriceChangeMsgSender.java
+END
