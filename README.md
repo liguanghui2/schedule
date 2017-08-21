@@ -1,2 +1,2 @@
 # schedule
-this is schedule
+This is a schedule system
